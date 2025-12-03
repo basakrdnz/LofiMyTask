@@ -178,4 +178,14 @@ MyTask - Lofi Not Tutma Uygulaması
 
 ---
 
+## ☕ Destek
+
+Bu projeyi beğendiyseniz ve geliştirmeye devam etmemi istiyorsanız, bir kahve ısmarlayabilirsiniz! ☕
+
+[![Buy Me A Coffee](https://img.shields.io/badge/Buy%20Me%20A%20Coffee-FFDD00?style=for-the-badge&logo=buy-me-a-coffee&logoColor=black)](https://buymeacoffee.com/basakkaradq)
+
+👉 [https://buymeacoffee.com/basakkaradq](https://buymeacoffee.com/basakkaradq)
+
+---
+
 ⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!

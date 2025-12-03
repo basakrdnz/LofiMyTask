@@ -181,6 +181,43 @@ export default function Layout({ children }: LayoutProps) {
         </div>
       </nav>
       <main>{children}</main>
+      
+      {/* Footer with Buy Me a Coffee */}
+      <footer 
+        className="mt-auto py-4 text-center border-t-2"
+        style={{ 
+          backgroundColor: colors.card,
+          borderColor: colors.border
+        }}
+      >
+        <div className="max-w-7xl mx-auto px-4">
+          <p 
+            className="text-sm mb-2"
+            style={{ 
+              color: colors.text,
+              opacity: 0.7,
+              fontFamily: "'Inter', sans-serif"
+            }}
+          >
+            Made with ❤️ by Basak
+          </p>
+          <a
+            href="https://buymeacoffee.com/basakkaradq"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 px-4 py-2 rounded-2xl font-medium transition-all transform hover:scale-105"
+            style={{
+              backgroundColor: '#FFDD00',
+              color: '#000000',
+              fontFamily: "'Poppins', sans-serif",
+              boxShadow: '0 2px 8px rgba(255, 221, 0, 0.3)'
+            }}
+          >
+            <span>☕</span>
+            <span>Buy Me a Coffee</span>
+          </a>
+        </div>
+      </footer>
     </div>
   );
 }

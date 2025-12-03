@@ -353,6 +353,25 @@ export default function Home() {
           </svg>
         )}
       </button>
+
+      {/* Buy Me a Coffee Butonu */}
+      <a
+        href="https://buymeacoffee.com/basakkaradq"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="fixed bottom-6 left-6 px-4 py-2 rounded-2xl font-medium transition-all transform hover:scale-110 shadow-xl z-50 flex items-center gap-2 border-3"
+        style={{
+          backgroundColor: '#FFDD00',
+          color: '#000000',
+          fontFamily: "'Poppins', sans-serif",
+          boxShadow: '0 4px 12px rgba(255, 221, 0, 0.4)',
+          borderColor: '#FFD700'
+        }}
+        title="Buy Me a Coffee ☕"
+      >
+        <span className="text-xl">☕</span>
+        <span className="hidden sm:inline">Buy Me a Coffee</span>
+      </a>
     </div>
   );
 }
