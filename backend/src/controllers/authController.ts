@@ -4,6 +4,9 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
 
+const JWT_SECRET = process.env.JWT_SECRET as string;
+const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+
 const registerSchema = z.object({
   email: z.string().email(),
   password: z.string().min(6),
@@ -45,8 +48,8 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
 
     const token = jwt.sign(
       { userId: user.id },
-      process.env.JWT_SECRET!,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
     );
 
     res.status(201).json({
@@ -89,8 +92,8 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
 
     const token = jwt.sign(
       { userId: user.id },
-      process.env.JWT_SECRET!,
-      { expiresIn: process.env.JWT_EXPIRES_IN || '7d' }
+      JWT_SECRET,
+      { expiresIn: JWT_EXPIRES_IN }
     );
 
     res.json({
