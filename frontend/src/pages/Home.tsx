@@ -6,7 +6,7 @@ import { useAuthStore } from '../store/authStore';
 export default function Home() {
   const navigate = useNavigate();
   const { colors } = useThemeStore();
-  const { token } = useAuthStore();
+  const { token, user } = useAuthStore();
   const [isPlaying, setIsPlaying] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
 
@@ -253,6 +253,22 @@ export default function Home() {
           />
         ))}
       </div>
+
+      {/* Hoşgeldin Mesajı - Sol Üst (Eğer giriş yapılmışsa) */}
+      {token && user && (
+        <div className="absolute top-6 left-6 z-20 animate-fadeInUp">
+          <p 
+            className="text-lg md:text-xl font-semibold"
+            style={{ 
+              color: colors.text,
+              fontFamily: "'Poppins', sans-serif",
+              textShadow: `0 0 15px ${colors.primary}40`
+            }}
+          >
+            Hoşgeldin{user.name ? `, ${user.name}` : ''}! 👋
+          </p>
+        </div>
+      )}
 
       {/* İçerik - Ortada */}
       <div className="relative z-10 flex items-center justify-center min-h-screen p-6">

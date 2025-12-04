@@ -40,7 +40,7 @@ export default function Layout({ children }: LayoutProps) {
   }, []);
 
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: colors.background }} className="flex flex-col">
+    <div style={{ minHeight: '100vh', backgroundColor: colors.background }}>
       <nav 
         className="shadow-md"
         style={{ backgroundColor: colors.card, borderBottom: `4px solid ${colors.border}` }}
