@@ -215,8 +215,7 @@ export default function Calendar() {
               } ${isToday ? 'ring-4' : ''} ${dayTasks.length > 0 ? 'cursor-pointer hover:shadow-lg hover:scale-105' : ''}`}
               style={{
                 backgroundColor: day.isCurrentMonth ? colors.card : colors.background,
-                borderColor: isToday ? colors.primary : colors.border,
-                ringColor: colors.primary
+                borderColor: isToday ? colors.primary : colors.border
               }}
             >
               <div className="flex justify-between items-start mb-2">

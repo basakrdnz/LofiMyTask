@@ -58,8 +58,7 @@ export default function NoteForm({ note, onSubmit, onCancel }: NoteFormProps) {
           style={{
             backgroundColor: colors.background,
             borderColor: colors.border,
-            color: colors.text,
-            focusRingColor: colors.primary
+            color: colors.text
           }}
           placeholder="Başlık yazın..."
         />

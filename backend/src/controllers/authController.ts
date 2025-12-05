@@ -4,8 +4,23 @@ import jwt from 'jsonwebtoken';
 import { z } from 'zod';
 import { prisma } from '../utils/prisma';
 
-const JWT_SECRET = process.env.JWT_SECRET as string;
 const JWT_EXPIRES_IN = process.env.JWT_EXPIRES_IN || '7d';
+
+const signToken = (userId: string): string => {
+  const secret = process.env.JWT_SECRET;
+  if (!secret || typeof secret !== 'string') {
+    throw new Error('JWT_SECRET is not configured');
+  }
+
+  // Explicitly type the payload and options to help TypeScript
+  const payload: object = { userId: userId };
+  const options: jwt.SignOptions = {
+    expiresIn: JWT_EXPIRES_IN as any
+  };
+
+  // Use type assertion to ensure correct overload is selected
+  return jwt.sign(payload, secret as jwt.Secret, options) as string;
+};
 
 const registerSchema = z.object({
   email: z.string().email(),
@@ -46,11 +61,7 @@ export const register = async (req: Request, res: Response, next: NextFunction) 
       }
     });
 
-    const token = jwt.sign(
-      { userId: user.id },
-      JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
-    );
+    const token = signToken(user.id);
 
     res.status(201).json({
       user,
@@ -90,11 +101,7 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
       return res.status(401).json({ error: 'Invalid credentials' });
     }
 
-    const token = jwt.sign(
-      { userId: user.id },
-      JWT_SECRET,
-      { expiresIn: JWT_EXPIRES_IN }
-    );
+    const token = signToken(user.id);
 
     res.json({
       user: {

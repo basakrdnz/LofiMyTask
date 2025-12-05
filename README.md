@@ -1,181 +1,93 @@
-# MyTask - Lofi Not Tutma Uygulaması 🎨
+# MyTask - Kişisel Not ve Görev Yönetim Uygulaması
 
-Modern teknolojiler kullanarak geliştirilmiş, lofi estetikli kişisel not ve görev yönetim uygulaması.
+Modern, kullanıcı dostu bir not ve görev yönetim uygulaması.
 
-![MyTask](https://img.shields.io/badge/MyTask-Lofi%20App-purple)
-![React](https://img.shields.io/badge/React-18-blue)
-![TypeScript](https://img.shields.io/badge/TypeScript-5.0-blue)
-![Node.js](https://img.shields.io/badge/Node.js-18+-green)
+## 🚀 Özellikler
 
-## ✨ Özellikler
+- 📝 Not oluşturma ve yönetme
+- ✅ Görev takibi
+- 📅 Takvim görünümü
+- 🎨 Modern ve responsive tasarım
+- 🔐 Güvenli kimlik doğrulama
+- 💾 Prisma ORM ile veritabanı yönetimi
 
-- 📝 **Notlar**: Düşüncelerinizi, fikirlerinizi kaydedin
-- ✅ **Görevler**: Deadline'lı görevler oluşturun ve takip edin
-- 📅 **Takvim Görünümü**: Tüm görevlerinizi takvimde görüntüleyin
-- ⭐ **Yıldız Sistemi**: Tamamladığınız görevler için yıldızlar kazanın
-- 🎨 **3 Farklı Tema**: Kütüphane, Not Defteri, Eğlenceli temalar
-- 🌙 **Lofi Tasarım**: Gece kafe atmosferi ile rahatlatıcı arayüz
-- 🎵 **Lofi Müzik**: Ana sayfada lofi müzik desteği
-- 📱 **Responsive**: Tüm cihazlarda mükemmel görünüm
-
-## 🚀 Teknoloji Stack'i
-
-### Frontend
-- **React 18** (TypeScript)
-- **Vite** - Hızlı build tool
-- **Tailwind CSS** - Utility-first CSS
-- **React Router** - Sayfa yönlendirme
-- **Zustand** - State management
-- **Axios** - HTTP client
+## 🛠️ Teknolojiler
 
 ### Backend
-- **Node.js + Express** (TypeScript)
-- **Prisma ORM** - Veritabanı yönetimi
-- **PostgreSQL** - Veritabanı
-- **JWT** - Authentication
-- **bcrypt** - Şifre hashleme
+- Node.js + Express
+- TypeScript
+- Prisma ORM
+- PostgreSQL
+- JWT Authentication
+- Zod Validation
 
-### DevOps
-- **Docker & Docker Compose** - Containerization
+### Frontend
+- React + TypeScript
+- Vite
+- Tailwind CSS
+- Zustand (State Management)
+- React Router
 
 ## 📦 Kurulum
 
 ### Gereksinimler
 - Node.js 18+
-- Docker & Docker Compose
-- Git
+- PostgreSQL (veya Docker)
+- npm veya yarn
 
 ### Adımlar
 
-1. **Projeyi klonlayın:**
+1. **Repository'yi klonlayın:**
 ```bash
-git clone https://github.com/kullaniciadi/mytask.git
-cd mytask
+git clone https://github.com/basakrdnz/LofiMyTask.git
+cd LofiMyTask
 ```
 
-2. **Environment değişkenlerini ayarlayın:**
+2. **Bağımlılıkları yükleyin:**
 ```bash
-# backend/.env dosyası oluşturun
-cd backend
-cp .env.example .env  # Eğer varsa
-# veya manuel olarak oluşturun:
-```
-
-`backend/.env` dosyasına şunları ekleyin:
-```env
-DATABASE_URL="postgresql://user:password@localhost:5432/mytask?schema=public"
-JWT_SECRET="your-super-secret-jwt-key-here"
-JWT_EXPIRES_IN="7d"
-PORT=3000
-```
-
-3. **Docker ile veritabanını başlatın:**
-```bash
-docker-compose up -d postgres
-```
-
-4. **Veritabanı migration'larını çalıştırın:**
-```bash
-cd backend
 npm install
-npx prisma migrate dev
+```
+
+3. **Backend ayarları:**
+```bash
+cd backend
+cp .env.example .env  # .env dosyası oluşturun
+# .env dosyasına DATABASE_URL ve JWT_SECRET ekleyin
 npx prisma generate
+npx prisma migrate dev
 ```
 
-5. **Backend'i başlatın:**
+4. **Frontend ayarları:**
 ```bash
-cd backend
+cd ../frontend
+# Gerekirse .env dosyası oluşturun
+```
+
+5. **Development modunda çalıştırın:**
+```bash
+# Root dizinde
 npm run dev
 ```
 
-6. **Frontend'i başlatın:**
+## 🚀 Production Build
+
 ```bash
-cd frontend
-npm install
-npm run dev
+npm run build
+npm start
 ```
 
-7. **Uygulamaya erişin:**
-- Frontend: http://localhost:5173
-- Backend API: http://localhost:3000
+## 📝 Scripts
 
-## 🎯 Kullanım
+- `npm run dev` - Development modunda çalıştırır
+- `npm run build` - Production build alır
+- `npm start` - Production modunda çalıştırır
+- `npm test` - Testleri çalıştırır
 
-1. Ana sayfada **"Başlayalım"** butonuna tıklayın
-2. Yeni hesap oluşturun veya giriş yapın
-3. Hoşgeldin sayfasında özellikleri keşfedin
-4. Dashboard'da notlar ve görevler oluşturun
-5. Takvim sayfasında görevlerinizi görüntüleyin
+## 🌐 Deployment
 
-## 📚 API Endpoints
+Render.com üzerinde deploy edilmiştir.
 
-### Authentication
-- `POST /api/auth/register` - Kullanıcı kaydı
-- `POST /api/auth/login` - Giriş yap
+## 📄 Lisans
 
-### Notes & Tasks
-- `GET /api/notes?type=note` - Notları listele
-- `GET /api/notes?type=task` - Görevleri listele
-- `GET /api/notes/:id` - Detay
-- `POST /api/notes` - Yeni not/görev oluştur
-- `PUT /api/notes/:id` - Güncelle
-- `DELETE /api/notes/:id` - Sil
+MIT
 
-## 🎨 Tema Renkleri
-
-### Library (Lofi Gece Kafe)
-- Primary: Yumuşak Mor (#BA68C8)
-- Secondary: Yumuşak Turkuaz (#4DD0E1)
-- Accent: Yumuşak Pembe-Kırmızı (#FF6B9D)
-
-### Notebook
-- Primary: Yumuşak Mavi (#42A5F5)
-- Secondary: Açık Mavi (#81D4FA)
-- Accent: Yumuşak Turuncu (#FF8A65)
-
-### Playful
-- Primary: Yumuşak Pembe (#F06292)
-- Secondary: Açık Pembe (#F8BBD0)
-- Accent: Yumuşak Mor (#CE93D8)
-
-## 📁 Proje Yapısı
-
-```
-mytask/
-├── backend/          # Express API
-│   ├── prisma/       # Database schema
-│   ├── src/
-│   │   ├── controllers/
-│   │   ├── middleware/
-│   │   ├── routes/
-│   │   └── utils/
-│   └── .env          # Environment variables
-├── frontend/         # React App
-│   ├── src/
-│   │   ├── components/
-│   │   ├── pages/
-│   │   ├── store/
-│   │   └── api/
-│   └── public/
-└── docker-compose.yml
-```
-
-## 🤝 Katkıda Bulunma
-
-1. Fork edin
-2. Feature branch oluşturun (`git checkout -b feature/amazing-feature`)
-3. Commit edin (`git commit -m 'Add amazing feature'`)
-4. Push edin (`git push origin feature/amazing-feature`)
-5. Pull Request açın
-
-## 📝 Lisans
-
-MIT License
-
-## 👨‍💻 Geliştirici
-
-MyTask - Lofi Not Tutma Uygulaması
-
----
-
-⭐ Bu projeyi beğendiyseniz yıldız vermeyi unutmayın!
