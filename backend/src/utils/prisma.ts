@@ -9,11 +9,18 @@ const { Pool } = pkg;
 // Load .env file before creating PrismaClient
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
-// Parse DATABASE_URL to check if SSL is needed
+// Environment detection
+const NODE_ENV = process.env.NODE_ENV || 'development';
 const databaseUrl = process.env.DATABASE_URL || '';
-const isProduction = process.env.NODE_ENV === 'production';
-const isRender = databaseUrl.includes('render.com') || databaseUrl.includes('onrender.com');
-const needsSSL = isProduction || isRender;
+
+// Determine if we're in production or using a remote database (like Render.com)
+const isProduction = NODE_ENV === 'production';
+const isLocalDatabase = databaseUrl.includes('localhost') || databaseUrl.includes('127.0.0.1') || databaseUrl.includes('postgres:5432');
+const isRemoteDatabase = databaseUrl.includes('render.com') || databaseUrl.includes('onrender.com') || databaseUrl.includes('amazonaws.com') || databaseUrl.includes('heroku.com');
+
+// SSL is required for remote databases (Render.com, AWS RDS, etc.)
+// Development with local PostgreSQL doesn't need SSL
+const needsSSL = isRemoteDatabase || (isProduction && !isLocalDatabase);
 
 // Remove sslmode from connection string if present (we'll use Pool SSL config instead)
 let cleanDatabaseUrl = databaseUrl;
@@ -23,21 +30,30 @@ if (cleanDatabaseUrl.includes('sslmode=')) {
   cleanDatabaseUrl = cleanDatabaseUrl.replace(/[?&]$/, '');
 }
 
-// SSL configuration for Render.com PostgreSQL (self-signed certificates)
-// Using Pool SSL config instead of connection string sslmode for better control
+// Pool configuration
 const poolConfig: any = {
   connectionString: cleanDatabaseUrl,
-  // Additional connection options
+  // Connection pool settings
   max: 10, // Maximum number of clients in the pool
-  idleTimeoutMillis: 30000,
-  connectionTimeoutMillis: 10000,
+  idleTimeoutMillis: 30000, // Close idle clients after 30 seconds
+  connectionTimeoutMillis: 10000, // Return an error after 10 seconds if connection cannot be established
 };
 
-// Add SSL config only for production/Render.com
+// Add SSL configuration for remote databases (Render.com, AWS RDS, etc.)
 if (needsSSL) {
   poolConfig.ssl = {
-    rejectUnauthorized: false, // Required for Render.com self-signed certificates
+    rejectUnauthorized: false, // Required for Render.com and other services with self-signed certificates
   };
+  
+  // Log SSL configuration in development for debugging
+  if (NODE_ENV === 'development') {
+    console.log('🔒 SSL enabled for database connection (remote database detected)');
+  }
+} else {
+  // Log in development for clarity
+  if (NODE_ENV === 'development') {
+    console.log('🔓 SSL disabled (local database)');
+  }
 }
 
 const pool = new Pool(poolConfig);
