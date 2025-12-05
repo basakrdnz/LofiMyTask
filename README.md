@@ -76,7 +76,17 @@ npm run build
 npm start
 ```
 
-git add . && git commit -m "Update Dockerfile.prod" && git push 
+## 🔄 Git Komutları
+
+```bash
+# Değişiklikleri ekle ve commit et
+git add .
+git commit -m "commit mesajı"
+git push
+
+# Veya tek satırda
+git add . && git commit -m "commit mesajı" && git push
+``` 
 
 ## 📝 Scripts
 
