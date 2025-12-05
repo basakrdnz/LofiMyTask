@@ -76,6 +76,8 @@ npm run build
 npm start
 ```
 
+git add . && git commit -m "Update Dockerfile.prod" && git push 
+
 ## 📝 Scripts
 
 - `npm run dev` - Development modunda çalıştırır
