@@ -12,7 +12,8 @@ dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 // Parse DATABASE_URL to check if SSL is needed
 let databaseUrl = process.env.DATABASE_URL || '';
 const isProduction = process.env.NODE_ENV === 'production';
-const needsSSL = isProduction || databaseUrl.includes('render.com') || databaseUrl.includes('onrender.com');
+const isRender = databaseUrl.includes('render.com') || databaseUrl.includes('onrender.com');
+const needsSSL = isProduction || isRender;
 
 // Ensure SSL mode is set for Render.com PostgreSQL
 if (needsSSL && !databaseUrl.includes('sslmode=')) {
@@ -20,14 +21,22 @@ if (needsSSL && !databaseUrl.includes('sslmode=')) {
   databaseUrl = `${databaseUrl}${separator}sslmode=require`;
 }
 
+// SSL configuration for Render.com PostgreSQL (self-signed certificates)
+const sslConfig = needsSSL
+  ? {
+      ssl: {
+        rejectUnauthorized: false, // Required for Render.com self-signed certificates
+      },
+    }
+  : {};
+
 const pool = new Pool({
   connectionString: databaseUrl,
-  // SSL configuration for Render.com PostgreSQL
-  ...(needsSSL && {
-    ssl: {
-      rejectUnauthorized: false, // Render.com uses self-signed certificates
-    },
-  }),
+  ...sslConfig,
+  // Additional connection options
+  max: 10, // Maximum number of clients in the pool
+  idleTimeoutMillis: 30000,
+  connectionTimeoutMillis: 10000,
 });
 
 const adapter = new PrismaPg(pool);
