@@ -10,34 +10,37 @@ const { Pool } = pkg;
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 // Parse DATABASE_URL to check if SSL is needed
-let databaseUrl = process.env.DATABASE_URL || '';
+const databaseUrl = process.env.DATABASE_URL || '';
 const isProduction = process.env.NODE_ENV === 'production';
 const isRender = databaseUrl.includes('render.com') || databaseUrl.includes('onrender.com');
 const needsSSL = isProduction || isRender;
 
-// Ensure SSL mode is set for Render.com PostgreSQL
-if (needsSSL && !databaseUrl.includes('sslmode=')) {
-  const separator = databaseUrl.includes('?') ? '&' : '?';
-  databaseUrl = `${databaseUrl}${separator}sslmode=require`;
+// Remove sslmode from connection string if present (we'll use Pool SSL config instead)
+let cleanDatabaseUrl = databaseUrl;
+if (cleanDatabaseUrl.includes('sslmode=')) {
+  cleanDatabaseUrl = cleanDatabaseUrl.replace(/[?&]sslmode=[^&]*/, '');
+  // Clean up trailing ? or & if left after removal
+  cleanDatabaseUrl = cleanDatabaseUrl.replace(/[?&]$/, '');
 }
 
 // SSL configuration for Render.com PostgreSQL (self-signed certificates)
-const sslConfig = needsSSL
-  ? {
-      ssl: {
-        rejectUnauthorized: false, // Required for Render.com self-signed certificates
-      },
-    }
-  : {};
-
-const pool = new Pool({
-  connectionString: databaseUrl,
-  ...sslConfig,
+// Using Pool SSL config instead of connection string sslmode for better control
+const poolConfig: any = {
+  connectionString: cleanDatabaseUrl,
   // Additional connection options
   max: 10, // Maximum number of clients in the pool
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
-});
+};
+
+// Add SSL config only for production/Render.com
+if (needsSSL) {
+  poolConfig.ssl = {
+    rejectUnauthorized: false, // Required for Render.com self-signed certificates
+  };
+}
+
+const pool = new Pool(poolConfig);
 
 const adapter = new PrismaPg(pool);
 
