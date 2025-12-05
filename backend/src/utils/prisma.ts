@@ -10,12 +10,18 @@ const { Pool } = pkg;
 dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 // Parse DATABASE_URL to check if SSL is needed
-const databaseUrl = process.env.DATABASE_URL || '';
+let databaseUrl = process.env.DATABASE_URL || '';
 const isProduction = process.env.NODE_ENV === 'production';
 const needsSSL = isProduction || databaseUrl.includes('render.com') || databaseUrl.includes('onrender.com');
 
+// Ensure SSL mode is set for Render.com PostgreSQL
+if (needsSSL && !databaseUrl.includes('sslmode=')) {
+  const separator = databaseUrl.includes('?') ? '&' : '?';
+  databaseUrl = `${databaseUrl}${separator}sslmode=require`;
+}
+
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: databaseUrl,
   // SSL configuration for Render.com PostgreSQL
   ...(needsSSL && {
     ssl: {
