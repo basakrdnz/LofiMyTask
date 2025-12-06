@@ -53,15 +53,15 @@ function App() {
     refreshAuth();
   }, [token, isHydrated, setAuth, logout]);
 
-  // Colors undefined kontrolü - default değerler
+  // Colors undefined kontrolü - koyu tema default
   const safeColors = colors || {
-    primary: '#BA68C8',
-    secondary: '#4DD0E1',
-    accent: '#FF6B9D',
-    background: '#1a0d2e',
-    card: '#2d1b4e',
-    text: '#F3E5F5',
-    border: '#9C27B0'
+    primary: '#8B7FA8',
+    secondary: '#A8C5D1',
+    accent: '#D4A5A5',
+    background: '#0a0a0a',
+    card: '#1a1a1a',
+    text: '#f5f5f5',
+    border: '#333333'
   };
 
   // Hydrate olana kadar veya auth refresh yapılırken loading göster

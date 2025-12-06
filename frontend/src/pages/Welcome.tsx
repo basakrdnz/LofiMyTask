@@ -9,15 +9,15 @@ export default function Welcome() {
   const { user } = useAuthStore();
   const { colors } = useThemeStore();
   
-  // Safe colors fallback
+  // Safe colors fallback - koyu tema
   const safeColors = colors || {
     primary: '#8B7FA8',
     secondary: '#A8C5D1',
     accent: '#D4A5A5',
-    background: '#F5F5F5',
-    card: '#FFFFFF',
-    text: '#2D2D2D',
-    border: '#E0E0E0'
+    background: '#0a0a0a',
+    card: '#1a1a1a',
+    text: '#f5f5f5',
+    border: '#333333'
   };
   const [currentFeature, setCurrentFeature] = useState(0);
   const [isLoading, setIsLoading] = useState(true);

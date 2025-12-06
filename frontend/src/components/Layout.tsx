@@ -1,7 +1,7 @@
-import { ReactNode, useState, useRef, useEffect } from 'react';
+import { ReactNode } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
-import { useThemeStore, Theme } from '../store/themeStore';
+import { useThemeStore } from '../store/themeStore';
 import { useNavigate } from 'react-router-dom';
 
 interface LayoutProps {
@@ -10,44 +10,24 @@ interface LayoutProps {
 
 export default function Layout({ children }: LayoutProps) {
   const { user, logout } = useAuthStore();
-  const { colors, theme, setTheme } = useThemeStore();
+  const { colors } = useThemeStore();
   const navigate = useNavigate();
   const location = useLocation();
-  const [isThemeMenuOpen, setIsThemeMenuOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
 
   const handleLogout = () => {
     logout();
     navigate('/login');
   };
 
-  const themes: { value: Theme; label: string; emoji: string }[] = [
-    { value: 'library', label: 'Kütüphane', emoji: '📚' },
-    { value: 'notebook', label: 'Not Defteri', emoji: '📓' },
-    { value: 'playful', label: 'Eğlenceli', emoji: '🎨' }
-  ];
-
-  // Dışarı tıklanınca menüyü kapat
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsThemeMenuOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
-
-  // Safe colors fallback
+  // Safe colors fallback - koyu tema
   const safeColors = colors || {
     primary: '#8B7FA8',
     secondary: '#A8C5D1',
     accent: '#D4A5A5',
-    background: '#F5F5F5',
-    card: '#FFFFFF',
-    text: '#2D2D2D',
-    border: '#E0E0E0'
+    background: '#0a0a0a',
+    card: '#1a1a1a',
+    text: '#f5f5f5',
+    border: '#333333'
   };
 
   return (
@@ -105,64 +85,6 @@ export default function Layout({ children }: LayoutProps) {
               <span className="text-sm font-medium" style={{ color: safeColors.text }}>
                 {user?.name || user?.email}
               </span>
-              
-              {/* Tema Seçici */}
-              <div className="relative" ref={menuRef}>
-                <button
-                  onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-                  className="p-2 rounded-lg transition-all hover:opacity-90"
-                  style={{
-                    backgroundColor: isThemeMenuOpen ? safeColors.primary : 'transparent',
-                    color: isThemeMenuOpen ? 'white' : safeColors.text
-                  }}
-                  title="Tema Değiştir"
-                >
-                  <span className="text-lg">🎨</span>
-                </button>
-                
-                {isThemeMenuOpen && (
-                  <div 
-                    className="absolute right-0 mt-2 w-48 rounded-xl shadow-lg border z-50"
-                    style={{
-                      backgroundColor: safeColors.card,
-                      borderColor: safeColors.border
-                    }}
-                  >
-                    <div className="py-2">
-                      {themes.map((t) => (
-                        <button
-                          key={t.value}
-                          onClick={() => {
-                            setTheme(t.value);
-                            setIsThemeMenuOpen(false);
-                          }}
-                          className={`w-full text-left px-4 py-2 flex items-center space-x-2 transition-all ${
-                            theme === t.value ? 'font-semibold' : ''
-                          }`}
-                          style={{
-                            backgroundColor: theme === t.value ? safeColors.primary + '10' : 'transparent',
-                            color: safeColors.text
-                          }}
-                          onMouseEnter={(e) => {
-                            if (theme !== t.value) {
-                              e.currentTarget.style.backgroundColor = safeColors.secondary + '10';
-                            }
-                          }}
-                          onMouseLeave={(e) => {
-                            if (theme !== t.value) {
-                              e.currentTarget.style.backgroundColor = 'transparent';
-                            }
-                          }}
-                        >
-                          <span className="text-base">{t.emoji}</span>
-                          <span>{t.label}</span>
-                          {theme === t.value && <span className="ml-auto">✓</span>}
-                        </button>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
 
               <button
                 onClick={handleLogout}
