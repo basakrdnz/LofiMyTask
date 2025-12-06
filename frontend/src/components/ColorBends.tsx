@@ -141,6 +141,9 @@ export default function ColorBends({
     const container = containerRef.current;
     if (!container) return;
 
+    // Type assertion after null check
+    const containerElement = container as HTMLDivElement;
+
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
@@ -186,13 +189,13 @@ export default function ColorBends({
     renderer.domElement.style.width = '100%';
     renderer.domElement.style.height = '100%';
     renderer.domElement.style.display = 'block';
-    container.appendChild(renderer.domElement);
+    containerElement.appendChild(renderer.domElement);
 
     const clock = new THREE.Clock();
 
     const handleResize = () => {
-      const w = container.clientWidth || 1;
-      const h = container.clientHeight || 1;
+      const w = containerElement.clientWidth || 1;
+      const h = containerElement.clientHeight || 1;
       renderer.setSize(w, h, false);
       material.uniforms.uCanvas.value.set(w, h);
     };
@@ -201,10 +204,10 @@ export default function ColorBends({
 
     if ('ResizeObserver' in window) {
       const ro = new ResizeObserver(handleResize);
-      ro.observe(container);
+      ro.observe(containerElement);
       resizeObserverRef.current = ro;
     } else {
-      window.addEventListener('resize', handleResize);
+      (window as Window).addEventListener('resize', handleResize);
     }
 
     const loop = () => {
@@ -231,12 +234,12 @@ export default function ColorBends({
     return () => {
       if (rafRef.current !== null) cancelAnimationFrame(rafRef.current);
       if (resizeObserverRef.current) resizeObserverRef.current.disconnect();
-      else window.removeEventListener('resize', handleResize);
+      else (window as Window).removeEventListener('resize', handleResize);
       geometry.dispose();
       material.dispose();
       renderer.dispose();
-      if (renderer.domElement && renderer.domElement.parentElement === container) {
-        container.removeChild(renderer.domElement);
+      if (renderer.domElement && renderer.domElement.parentElement === containerElement) {
+        containerElement.removeChild(renderer.domElement);
       }
     };
   }, [frequency, mouseInfluence, noise, parallax, scale, speed, transparent, warpStrength]);
@@ -294,16 +297,19 @@ export default function ColorBends({
     const container = containerRef.current;
     if (!material || !container) return;
 
+    // Type assertion after null check
+    const containerElement = container as HTMLDivElement;
+
     const handlePointerMove = (e: PointerEvent) => {
-      const rect = container.getBoundingClientRect();
+      const rect = containerElement.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / (rect.width || 1)) * 2 - 1;
       const y = -(((e.clientY - rect.top) / (rect.height || 1)) * 2 - 1);
       pointerTargetRef.current.set(x, y);
     };
 
-    container.addEventListener('pointermove', handlePointerMove);
+    containerElement.addEventListener('pointermove', handlePointerMove);
     return () => {
-      container.removeEventListener('pointermove', handlePointerMove);
+      containerElement.removeEventListener('pointermove', handlePointerMove);
     };
   }, []);
 
