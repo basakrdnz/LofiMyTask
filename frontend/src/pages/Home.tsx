@@ -2,6 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useThemeStore } from '../store/themeStore';
 import { useAuthStore } from '../store/authStore';
+import ColorBends from '../components/ColorBends';
 
 export default function Home() {
   const navigate = useNavigate();
@@ -32,271 +33,78 @@ export default function Home() {
     }
   };
 
+  // Safe colors fallback
+  const safeColors = colors || {
+    primary: '#8B7FA8',
+    secondary: '#A8C5D1',
+    accent: '#D4A5A5',
+    background: '#F5F5F5',
+    card: '#FFFFFF',
+    text: '#2D2D2D',
+    border: '#E0E0E0'
+  };
+
   return (
-    <div className="relative min-h-screen overflow-hidden" style={{ backgroundColor: colors.background }}>
+    <div className="relative min-h-screen overflow-hidden">
       {/* Lofi Müzik */}
       <audio ref={audioRef} src={lofiMusicUrl} preload="auto" />
 
-      {/* Lofi Kafe Sahnesi - Arka Plan */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gece gökyüzü gradient */}
-        <div 
+      {/* ReactBits Color Bends Background */}
+      <div className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        {/* ColorBends Component - Çok parlak ve belirgin renkler */}
+        <ColorBends
           className="absolute inset-0"
-          style={{
-            background: `linear-gradient(180deg, #1a0d2e 0%, #2d1b4e 50%, #1a0d2e 100%)`
-          }}
+          colors={['#a855f7', '#3b82f6', '#ec4899', '#8b5cf6', '#06b6d4', '#f59e0b']}
+          rotation={30}
+          speed={0.3}
+          scale={1.2}
+          frequency={1.4}
+          warpStrength={1.2}
+          mouseInfluence={0.8}
+          parallax={0.6}
+          noise={0.08}
+          transparent={false}
         />
-
-        {/* Yıldızlar */}
-        {[...Array(30)].map((_, i) => (
-          <div
-            key={`star-${i}`}
-            className="absolute w-1 h-1 rounded-full animate-pixel-glow"
-            style={{
-              left: `${(i * 7) % 100}%`,
-              top: `${(i * 5) % 80}%`,
-              backgroundColor: '#FFFFFF',
-              boxShadow: `0 0 4px #FFFFFF`,
-              animationDelay: `${i * 0.3}s`,
-              animationDuration: `${2 + (i % 3)}s`
-            }}
-          />
-        ))}
-
-        {/* Neon Binalar (Arka Plan - Sağ Taraf) */}
-        <div className="absolute bottom-0 right-0 w-2/3 h-2/3">
-          {/* Bina 1 - Sağ */}
-          <div 
-            className="absolute bottom-0 right-0 w-32 h-64 opacity-70"
-            style={{
-              backgroundColor: '#2d1b4e',
-              clipPath: 'polygon(100% 100%, 100% 35%, 85% 30%, 85% 100%)',
-              boxShadow: `0 0 30px ${colors.primary}40`
-            }}
-          />
-          {/* Bina 2 - Sağ Orta */}
-          <div 
-            className="absolute bottom-0 right-32 w-36 h-80 opacity-70"
-            style={{
-              backgroundColor: '#1a0d2e',
-              clipPath: 'polygon(100% 100%, 100% 40%, 90% 35%, 90% 100%)',
-              boxShadow: `0 0 30px ${colors.secondary}40`
-            }}
-          />
-          {/* Bina 3 - Sağ Uzak */}
-          <div 
-            className="absolute bottom-0 right-68 w-28 h-72 opacity-70"
-            style={{
-              backgroundColor: '#2d1b4e',
-              clipPath: 'polygon(100% 100%, 100% 45%, 88% 40%, 88% 100%)',
-              boxShadow: `0 0 30px ${colors.accent}40`
-            }}
-          />
-
-          {/* Neon Pencereler - Yanıp Sönen */}
-          {[...Array(18)].map((_, i) => {
-            const positions = [
-              { right: '8%', bottom: '40%' },
-              { right: '8%', bottom: '55%' },
-              { right: '8%', bottom: '70%' },
-              { right: '25%', bottom: '35%' },
-              { right: '25%', bottom: '50%' },
-              { right: '25%', bottom: '65%' },
-              { right: '25%', bottom: '80%' },
-              { right: '45%', bottom: '30%' },
-              { right: '45%', bottom: '45%' },
-              { right: '45%', bottom: '60%' },
-              { right: '45%', bottom: '75%' },
-              { right: '65%', bottom: '25%' },
-              { right: '65%', bottom: '40%' },
-              { right: '65%', bottom: '55%' },
-            ];
-            const pos = positions[i % positions.length];
-            return (
-              <div
-                key={`window-${i}`}
-                className="absolute w-3 h-4 animate-pixel-glow"
-                style={{
-                  ...pos,
-                  backgroundColor: i % 3 === 0 ? '#FF1744' : i % 3 === 1 ? '#00E5FF' : '#E91E63',
-                  boxShadow: `0 0 12px ${i % 3 === 0 ? '#FF1744' : i % 3 === 1 ? '#00E5FF' : '#E91E63'}`,
-                  animationDelay: `${i * 0.2}s`,
-                  animationDuration: `${2 + (i % 3)}s`
-                }}
-              />
-            );
-          })}
-
-          {/* Neon Tabelalar - Hareketli Glow */}
-          <div 
-            className="absolute bottom-1/3 right-20 w-24 h-8 flex items-center justify-center animate-pixel-glow"
-            style={{
-              backgroundColor: '#00E5FF',
-              boxShadow: `0 0 20px #00E5FF`,
-              animationDuration: '2s'
-            }}
-          >
-            <span className="text-xs font-bold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>MARKET</span>
-          </div>
-          <div 
-            className="absolute bottom-1/4 right-48 w-20 h-6 flex items-center justify-center animate-pixel-glow"
-            style={{
-              backgroundColor: '#FF1744',
-              boxShadow: `0 0 20px #FF1744`,
-              animationDuration: '2.5s',
-              animationDelay: '0.5s'
-            }}
-          >
-            <span className="text-xs font-bold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>BURGER</span>
-          </div>
-          <div 
-            className="absolute bottom-1/5 right-72 w-28 h-7 flex items-center justify-center animate-pixel-glow"
-            style={{
-              backgroundColor: '#E91E63',
-              boxShadow: `0 0 20px #E91E63`,
-              animationDuration: '3s',
-              animationDelay: '1s'
-            }}
-          >
-            <span className="text-xs font-bold text-white" style={{ fontFamily: "'Poppins', sans-serif" }}>YAKINIKU</span>
-          </div>
-        </div>
-
-        {/* İç Mekan - Sol Taraf (Kafe) */}
-        <div className="absolute bottom-0 left-0 w-1/3 h-3/4">
-          {/* Masa */}
-          <div 
-            className="absolute bottom-20 left-10 w-48 h-32 rounded-lg"
-            style={{
-              backgroundColor: '#8B4513',
-              boxShadow: `0 4px 20px rgba(0,0,0,0.3)`
-            }}
-          />
-          
-          {/* Laptop (Masa Üstünde) */}
-          <div 
-            className="absolute bottom-32 left-16 w-32 h-20 rounded-sm"
-            style={{
-              backgroundColor: '#C0C0C0',
-              boxShadow: `0 0 15px ${colors.primary}60`
-            }}
-          >
-            {/* Laptop Ekran */}
-            <div 
-              className="absolute top-0 left-0 w-full h-3/4 rounded-t-sm animate-pixel-glow"
-              style={{
-                backgroundColor: '#E8E8E8',
-                boxShadow: `inset 0 0 10px rgba(0,0,0,0.2), 0 0 20px ${colors.primary}40`,
-                animationDuration: '3s'
-              }}
-            />
-          </div>
-
-          {/* Sandalye */}
-          <div 
-            className="absolute bottom-20 left-8 w-12 h-16"
-            style={{
-              backgroundColor: '#FF1744',
-              clipPath: 'polygon(0% 100%, 0% 60%, 20% 50%, 20% 0%, 80% 0%, 80% 50%, 100% 60%, 100% 100%)',
-              boxShadow: `0 4px 15px rgba(255,23,68,0.4)`
-            }}
-          />
-
-          {/* Bitki (Sol Köşe) */}
-          <div 
-            className="absolute bottom-0 left-0 w-16 h-24"
-            style={{
-              backgroundColor: '#4A148C',
-              clipPath: 'polygon(50% 0%, 30% 30%, 20% 60%, 40% 80%, 60% 80%, 80% 60%, 70% 30%)',
-              opacity: 0.8
-            }}
-          />
-
-          {/* Asılı Lambalar - Yanıp Sönen */}
-          <div 
-            className="absolute top-20 left-1/2 w-8 h-12 rounded-full animate-pixel-glow"
-            style={{
-              backgroundColor: '#FF1744',
-              clipPath: 'ellipse(50% 100% at 50% 0%)',
-              boxShadow: `0 0 25px #FF1744`,
-              animationDuration: '3s'
-            }}
-          />
-          <div 
-            className="absolute top-20 right-10 w-8 h-12 rounded-full animate-pixel-glow"
-            style={{
-              backgroundColor: '#00E5FF',
-              clipPath: 'ellipse(50% 100% at 50% 0%)',
-              boxShadow: `0 0 25px #00E5FF`,
-              animationDuration: '2.5s',
-              animationDelay: '1s'
-            }}
-          />
-        </div>
-
-        {/* Neon Şeritler - Hareketli */}
-        {[...Array(6)].map((_, i) => (
-          <div
-            key={`neon-stripe-${i}`}
-            className="absolute animate-pixel-slide"
-            style={{
-              left: `${(i * 18) % 100}%`,
-              top: `${20 + (i * 12)}%`,
-              width: '200px',
-              height: '3px',
-              backgroundColor: i % 3 === 0 ? colors.primary : i % 3 === 1 ? colors.secondary : colors.accent,
-              opacity: 0.4,
-              animationDelay: `${i * 0.6}s`,
-              animationDuration: `${8 + (i % 3) * 2}s`,
-              boxShadow: `0 0 20px ${i % 3 === 0 ? colors.primary : i % 3 === 1 ? colors.secondary : colors.accent}80`
-            }}
-          />
-        ))}
       </div>
 
       {/* Hoşgeldin Mesajı - Sol Üst (Eğer giriş yapılmışsa) */}
       {token && user && (
-        <div className="absolute top-6 left-6 z-20 animate-fadeInUp">
+        <div className="absolute top-6 left-6 z-20">
           <p 
             className="text-lg md:text-xl font-semibold"
             style={{ 
-              color: colors.text,
-              fontFamily: "'Poppins', sans-serif",
-              textShadow: `0 0 15px ${colors.primary}40`
+              color: '#FFFFFF'
             }}
           >
-            Hoşgeldin{user.name ? `, ${user.name}` : ''}! 👋
+            Hoşgeldin{user.name ? `, ${user.name}` : ''}!
           </p>
         </div>
       )}
 
       {/* İçerik - Ortada */}
       <div className="relative z-10 flex items-center justify-center min-h-screen p-6">
-        <div className="max-w-2xl w-full text-center space-y-8 animate-fadeInUp">
+        <div className="max-w-2xl w-full text-center space-y-8">
           {/* Logo/Title */}
           <div className="mb-8">
             <h1 
-              className="text-6xl md:text-7xl font-black mb-4 animate-slideInDown"
+              className="text-5xl md:text-6xl font-semibold mb-4"
               style={{ 
-                color: colors.text,
-                textShadow: `0 0 30px ${colors.primary}60`,
-                fontFamily: "'Poppins', sans-serif"
+                color: '#FFFFFF'
               }}
             >
               MyTask
             </h1>
             <p 
-              className="text-xl md:text-2xl font-light"
+              className="text-lg md:text-xl"
               style={{ 
-                color: colors.text,
-                opacity: 0.9,
-                fontFamily: "'Inter', sans-serif"
+                color: '#FFFFFF',
+                opacity: 0.8
               }}
             >
               Notlarınız ve görevleriniz için
               <br />
-              <span className="font-semibold" style={{ color: colors.primary }}>
-                lofi bir alan
+              <span className="font-medium" style={{ color: safeColors.primary }}>
+                minimal bir alan
               </span>
             </p>
           </div>
@@ -306,38 +114,31 @@ export default function Home() {
             {token ? (
               <button
                 onClick={() => navigate('/dashboard')}
-                className="px-8 py-4 rounded-3xl font-bold text-lg transform hover:scale-110 transition-all duration-300 shadow-xl hover:shadow-2xl animate-pulse-slow"
+                className="px-8 py-3 rounded-lg font-medium text-white transition-all hover:opacity-90 shadow-sm"
                 style={{
-                  backgroundColor: colors.primary,
-                  color: 'white',
-                  fontFamily: "'Poppins', sans-serif",
-                  boxShadow: `0 0 30px ${colors.primary}60`
+                  backgroundColor: safeColors.primary
                 }}
               >
-                Dashboard'a Git →
+                Dashboard'a Git
               </button>
             ) : (
               <>
                 <button
                   onClick={() => navigate('/login')}
-                  className="px-8 py-4 rounded-3xl font-bold text-lg transform hover:scale-110 transition-all duration-300 shadow-xl hover:shadow-2xl animate-pulse-slow"
+                  className="px-8 py-3 rounded-lg font-medium text-white transition-all hover:opacity-90 shadow-sm"
                   style={{
-                    backgroundColor: colors.primary,
-                    color: 'white',
-                    fontFamily: "'Poppins', sans-serif",
-                    boxShadow: `0 0 30px ${colors.primary}60`
+                    backgroundColor: safeColors.primary
                   }}
                 >
-                  Başlayalım →
+                  Başlayalım
                 </button>
                 <button
                   onClick={() => navigate('/register')}
-                  className="px-8 py-4 rounded-3xl font-bold text-lg transform hover:scale-110 transition-all duration-300 border-4"
+                  className="px-8 py-3 rounded-lg font-medium transition-all hover:opacity-90 border"
                   style={{
                     backgroundColor: 'transparent',
-                    borderColor: colors.primary,
-                    color: colors.primary,
-                    fontFamily: "'Poppins', sans-serif"
+                    borderColor: safeColors.primary,
+                    color: safeColors.primary
                   }}
                 >
                   Hesap Oluştur
@@ -351,11 +152,10 @@ export default function Home() {
       {/* Müzik Kontrol Butonu */}
       <button
         onClick={toggleMusic}
-        className="fixed bottom-6 right-6 w-14 h-14 rounded-full flex items-center justify-center transition-all transform hover:scale-110 shadow-xl z-50 border-3"
+        className="fixed bottom-6 right-6 w-12 h-12 rounded-full flex items-center justify-center transition-all hover:opacity-90 shadow-sm z-50"
         style={{
-          backgroundColor: colors.primary,
-          color: 'white',
-          boxShadow: `0 0 20px ${colors.primary}60`
+          backgroundColor: safeColors.primary,
+          color: 'white'
         }}
         title={isPlaying ? 'Müziği Durdur' : 'Müziği Başlat'}
       >

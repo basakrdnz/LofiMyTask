@@ -17,6 +17,17 @@ export default function Dashboard() {
   const [showTaskForm, setShowTaskForm] = useState(false);
   const [activeTab, setActiveTab] = useState<'notes' | 'tasks'>('notes');
   const { colors } = useThemeStore();
+  
+  // Safe colors fallback
+  const safeColors = colors || {
+    primary: '#8B7FA8',
+    secondary: '#A8C5D1',
+    accent: '#D4A5A5',
+    background: '#F5F5F5',
+    card: '#FFFFFF',
+    text: '#2D2D2D',
+    border: '#E0E0E0'
+  };
 
   useEffect(() => {
     loadData();
@@ -87,7 +98,7 @@ export default function Dashboard() {
   return (
     <div 
       className="min-h-screen p-6 transition-colors"
-      style={{ backgroundColor: colors.background }}
+      style={{ backgroundColor: safeColors.background }}
     >
       <div className="max-w-7xl mx-auto">
         {/* Header - Sade */}
@@ -95,7 +106,7 @@ export default function Dashboard() {
           <h1 
             className="text-3xl font-semibold mb-2" 
             style={{ 
-              color: colors.text
+              color: safeColors.text
             }}
           >
             Dashboard
@@ -103,7 +114,7 @@ export default function Dashboard() {
           <p 
             className="text-sm" 
             style={{ 
-              color: colors.text, 
+              color: safeColors.text, 
               opacity: 0.6
             }}
           >
@@ -112,21 +123,21 @@ export default function Dashboard() {
         </div>
 
         {/* Tabs - Minimal */}
-        <div className="flex space-x-1 mb-6 border-b" style={{ borderColor: colors.border }}>
+        <div className="flex space-x-1 mb-6 border-b" style={{ borderColor: safeColors.border }}>
           <button
             onClick={() => setActiveTab('notes')}
             className={`px-6 py-3 font-medium text-sm transition-colors relative ${
               activeTab === 'notes' ? '' : 'opacity-60 hover:opacity-100'
             }`}
             style={{
-              color: activeTab === 'notes' ? colors.primary : colors.text,
+              color: activeTab === 'notes' ? safeColors.primary : safeColors.text,
             }}
           >
             Notlar ({notes.length})
             {activeTab === 'notes' && (
               <div 
                 className="absolute bottom-0 left-0 right-0 h-0.5"
-                style={{ backgroundColor: colors.primary }}
+                style={{ backgroundColor: safeColors.primary }}
               />
             )}
           </button>
@@ -136,14 +147,14 @@ export default function Dashboard() {
               activeTab === 'tasks' ? '' : 'opacity-60 hover:opacity-100'
             }`}
             style={{
-              color: activeTab === 'tasks' ? colors.primary : colors.text,
+              color: activeTab === 'tasks' ? safeColors.primary : safeColors.text,
             }}
           >
             Görevler ({tasks.length})
             {activeTab === 'tasks' && (
               <div 
                 className="absolute bottom-0 left-0 right-0 h-0.5"
-                style={{ backgroundColor: colors.primary }}
+                style={{ backgroundColor: safeColors.primary }}
               />
             )}
           </button>
@@ -217,7 +228,7 @@ export default function Dashboard() {
           {activeTab === 'notes' ? (
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-semibold" style={{ color: colors.text }}>
+                <h2 className="text-lg font-semibold" style={{ color: safeColors.text }}>
                   Notlarım
                 </h2>
                 <button
@@ -228,7 +239,7 @@ export default function Dashboard() {
                   }}
                   className="px-4 py-2 rounded-lg font-medium text-white transition-all hover:opacity-90 shadow-sm"
                   style={{
-                    backgroundColor: colors.primary,
+                    backgroundColor: safeColors.primary,
                   }}
                 >
                   + Yeni Not
@@ -239,15 +250,15 @@ export default function Dashboard() {
                 <div 
                   className="text-center py-16 rounded-xl border"
                   style={{ 
-                    backgroundColor: colors.card, 
-                    borderColor: colors.border 
+                    backgroundColor: safeColors.card, 
+                    borderColor: safeColors.border 
                   }}
                 >
                   <div className="text-4xl mb-3 opacity-40">📄</div>
-                  <p className="text-base font-medium mb-1" style={{ color: colors.text }}>
+                  <p className="text-base font-medium mb-1" style={{ color: safeColors.text }}>
                     Henüz notunuz yok
                   </p>
-                  <p className="text-sm" style={{ color: colors.text, opacity: 0.6 }}>
+                  <p className="text-sm" style={{ color: safeColors.text, opacity: 0.6 }}>
                     İlk notunuzu oluşturmak için yukarıdaki butona tıklayın
                   </p>
                 </div>
@@ -271,7 +282,7 @@ export default function Dashboard() {
           ) : (
             <div>
               <div className="flex justify-between items-center mb-6">
-                <h2 className="text-lg font-semibold" style={{ color: colors.text }}>
+                <h2 className="text-lg font-semibold" style={{ color: safeColors.text }}>
                   Görevlerim
                 </h2>
                 <button
@@ -282,7 +293,7 @@ export default function Dashboard() {
                   }}
                   className="px-4 py-2 rounded-lg font-medium text-white transition-all hover:opacity-90 shadow-sm"
                   style={{
-                    backgroundColor: colors.primary,
+                    backgroundColor: safeColors.primary,
                   }}
                 >
                   + Yeni Görev
@@ -293,15 +304,15 @@ export default function Dashboard() {
                 <div 
                   className="text-center py-16 rounded-xl border"
                   style={{ 
-                    backgroundColor: colors.card, 
-                    borderColor: colors.border 
+                    backgroundColor: safeColors.card, 
+                    borderColor: safeColors.border 
                   }}
                 >
                   <div className="text-4xl mb-3 opacity-40">✅</div>
-                  <p className="text-base font-medium mb-1" style={{ color: colors.text }}>
+                  <p className="text-base font-medium mb-1" style={{ color: safeColors.text }}>
                     Henüz göreviniz yok
                   </p>
-                  <p className="text-sm" style={{ color: colors.text, opacity: 0.6 }}>
+                  <p className="text-sm" style={{ color: safeColors.text, opacity: 0.6 }}>
                     İlk görevinizi oluşturmak için yukarıdaki butona tıklayın
                   </p>
                 </div>

@@ -10,6 +10,17 @@ export default function Calendar() {
   const [selectedDate, setSelectedDate] = useState<Date | null>(null);
   const [selectedTasks, setSelectedTasks] = useState<Note[]>([]);
   const { colors } = useThemeStore();
+  
+  // Safe colors fallback
+  const safeColors = colors || {
+    primary: '#8B7FA8',
+    secondary: '#A8C5D1',
+    accent: '#D4A5A5',
+    background: '#F5F5F5',
+    card: '#FFFFFF',
+    text: '#2D2D2D',
+    border: '#E0E0E0'
+  };
 
   useEffect(() => {
     loadTasks();
@@ -111,47 +122,47 @@ export default function Calendar() {
       <div className="mb-6">
         <h1 
           className="text-3xl font-semibold mb-2" 
-          style={{ 
-            color: colors.text
-          }}
-        >
-          Takvim
-        </h1>
-        <p 
-          className="text-sm" 
-          style={{ 
-            color: colors.text, 
-            opacity: 0.6
-          }}
-        >
-          Tamamlanan görevler için ⭐, deadline'lar için ⚠️
-        </p>
+            style={{ 
+              color: safeColors.text
+            }}
+          >
+            Takvim
+          </h1>
+          <p 
+            className="text-sm" 
+            style={{ 
+              color: safeColors.text, 
+              opacity: 0.6
+            }}
+          >
+            Tamamlanan görevler için ⭐, deadline'lar için ⚠️
+          </p>
       </div>
 
       {/* Ay Navigasyonu */}
       <div 
         className="flex justify-between items-center mb-6 p-4 rounded-xl"
-        style={{ backgroundColor: colors.card }}
+        style={{ backgroundColor: safeColors.card }}
       >
         <button
           onClick={previousMonth}
           className="px-4 py-2 rounded-lg font-bold transition-all hover:scale-105"
           style={{
-            backgroundColor: colors.secondary,
+            backgroundColor: safeColors.secondary,
             color: 'white'
           }}
         >
           ← Önceki Ay
         </button>
-        <h2 className="text-2xl font-bold" style={{ color: colors.text }}>
+        <h2 className="text-2xl font-semibold" style={{ color: safeColors.text }}>
           {getMonthName(currentMonth)}
         </h2>
         <div className="flex space-x-2">
           <button
             onClick={goToToday}
-            className="px-4 py-2 rounded-lg font-medium transition-all hover:scale-105"
+            className="px-4 py-2 rounded-lg font-medium transition-all hover:opacity-90"
             style={{
-              backgroundColor: colors.primary,
+              backgroundColor: safeColors.primary,
               color: 'white'
             }}
           >
@@ -159,9 +170,9 @@ export default function Calendar() {
           </button>
           <button
             onClick={nextMonth}
-            className="px-4 py-2 rounded-lg font-bold transition-all hover:scale-105"
+            className="px-4 py-2 rounded-lg font-medium transition-all hover:opacity-90"
             style={{
-              backgroundColor: colors.secondary,
+              backgroundColor: safeColors.secondary,
               color: 'white'
             }}
           >
@@ -207,8 +218,8 @@ export default function Calendar() {
                 !day.isCurrentMonth ? 'opacity-40' : ''
               } ${isToday ? 'ring-4' : ''} ${dayTasks.length > 0 ? 'cursor-pointer hover:shadow-lg hover:scale-105' : ''}`}
               style={{
-                backgroundColor: day.isCurrentMonth ? colors.card : colors.background,
-                borderColor: isToday ? colors.primary : colors.border
+                backgroundColor: day.isCurrentMonth ? safeColors.card : safeColors.background,
+                borderColor: isToday ? safeColors.primary : safeColors.border
               }}
             >
               <div className="flex justify-between items-start mb-2">
@@ -217,7 +228,7 @@ export default function Calendar() {
                     isToday ? 'text-lg' : ''
                   }`}
                   style={{
-                    color: isToday ? colors.primary : colors.text
+                    color: isToday ? safeColors.primary : safeColors.text
                   }}
                 >
                   {day.date.getDate()}
@@ -251,9 +262,9 @@ export default function Calendar() {
                       className="truncate px-1 py-0.5 rounded"
                       style={{
                         backgroundColor: task.completed
-                          ? colors.secondary + '40'
+                          ? safeColors.secondary + '40'
                           : '#FEE2E2',
-                        color: task.completed ? colors.text : '#DC2626'
+                        color: task.completed ? safeColors.text : '#DC2626'
                       }}
                       title={task.title}
                     >
@@ -261,7 +272,7 @@ export default function Calendar() {
                     </div>
                   ))}
                   {dayTasks.length > 2 && (
-                    <div className="text-xs" style={{ color: colors.text, opacity: 0.7 }}>
+                    <div className="text-xs" style={{ color: safeColors.text, opacity: 0.7 }}>
                       +{dayTasks.length - 2} daha
                     </div>
                   )}
@@ -275,23 +286,23 @@ export default function Calendar() {
       {/* Açıklama */}
       <div 
         className="mt-6 p-4 rounded-xl"
-        style={{ backgroundColor: colors.card }}
+        style={{ backgroundColor: safeColors.card }}
       >
-        <h3 className="font-bold mb-2" style={{ color: colors.text }}>
-          📊 Gösterge
+        <h3 className="font-semibold mb-2" style={{ color: safeColors.text }}>
+          Gösterge
         </h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm">
           <div className="flex items-center space-x-2">
             <span className="text-xl">⭐</span>
-            <span style={{ color: colors.text }}>Tamamlanan görev (o gün)</span>
+            <span style={{ color: safeColors.text }}>Tamamlanan görev (o gün)</span>
           </div>
           <div className="flex items-center space-x-2">
             <span className="text-xl">📌</span>
-            <span style={{ color: colors.text }}>Deadline var (yaklaşıyor)</span>
+            <span style={{ color: safeColors.text }}>Deadline var (yaklaşıyor)</span>
           </div>
           <div className="flex items-center space-x-2">
             <span className="text-xl">⚠️</span>
-            <span style={{ color: colors.text }}>Deadline geçti (acil!)</span>
+            <span style={{ color: safeColors.text }}>Deadline geçti (acil!)</span>
           </div>
         </div>
       </div>
@@ -308,14 +319,14 @@ export default function Calendar() {
           <div 
             className="max-w-2xl w-full rounded-xl shadow-2xl border-2 max-h-[80vh] overflow-y-auto"
             style={{
-              backgroundColor: colors.card,
-              borderColor: colors.border
+              backgroundColor: safeColors.card,
+              borderColor: safeColors.border
             }}
             onClick={(e) => e.stopPropagation()}
           >
             <div className="p-6">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold" style={{ color: colors.text }}>
+                <h2 className="text-2xl font-semibold" style={{ color: safeColors.text }}>
                   📅 {selectedDate.toLocaleDateString('tr-TR', { 
                     weekday: 'long', 
                     year: 'numeric', 
@@ -329,7 +340,7 @@ export default function Calendar() {
                     setSelectedTasks([]);
                   }}
                   className="text-2xl hover:scale-110 transition-all"
-                  style={{ color: colors.text }}
+                  style={{ color: safeColors.text }}
                 >
                   ✕
                 </button>
@@ -349,10 +360,10 @@ export default function Calendar() {
                       key={task.id}
                       className="p-4 rounded-lg border-2"
                       style={{
-                        backgroundColor: colors.background,
-                        borderColor: isCompleted ? colors.secondary : 
+                        backgroundColor: safeColors.background,
+                        borderColor: isCompleted ? safeColors.secondary : 
                                     isPastDeadline ? '#DC2626' : 
-                                    isUpcoming ? '#F59E0B' : colors.border
+                                    isUpcoming ? '#F59E0B' : safeColors.border
                       }}
                     >
                       <div className="flex items-start gap-3">
@@ -365,7 +376,7 @@ export default function Calendar() {
                               isCompleted ? 'line-through' : ''
                             }`}
                             style={{ 
-                              color: isCompleted ? colors.text + '80' : colors.text 
+                              color: isCompleted ? safeColors.text + '80' : safeColors.text 
                             }}
                           >
                             {task.title}
@@ -375,7 +386,7 @@ export default function Calendar() {
                               isCompleted ? 'line-through' : ''
                             }`}
                             style={{ 
-                              color: isCompleted ? colors.text + '60' : colors.text,
+                              color: isCompleted ? safeColors.text + '60' : safeColors.text,
                               opacity: isCompleted ? 0.6 : 0.8
                             }}
                           >
@@ -386,8 +397,8 @@ export default function Calendar() {
                               <span 
                                 className="px-2 py-1 rounded"
                                 style={{
-                                  backgroundColor: colors.secondary + '40',
-                                  color: colors.text
+                                  backgroundColor: safeColors.secondary + '40',
+                                  color: safeColors.text
                                 }}
                               >
                                 ✅ Tamamlandı
@@ -398,9 +409,9 @@ export default function Calendar() {
                                 className="px-2 py-1 rounded font-medium"
                                 style={{
                                   backgroundColor: isPastDeadline ? '#FEE2E2' : 
-                                                  isUpcoming ? '#FEF3C7' : colors.secondary + '40',
+                                                  isUpcoming ? '#FEF3C7' : safeColors.secondary + '40',
                                   color: isPastDeadline ? '#DC2626' : 
-                                         isUpcoming ? '#D97706' : colors.text
+                                         isUpcoming ? '#D97706' : safeColors.text
                                 }}
                               >
                                 ⏰ Deadline: {deadlineDate!.toLocaleDateString('tr-TR', {
@@ -417,8 +428,8 @@ export default function Calendar() {
                             <span 
                               className="px-2 py-1 rounded"
                               style={{
-                                backgroundColor: colors.secondary + '20',
-                                color: colors.text,
+                                backgroundColor: safeColors.secondary + '20',
+                                color: safeColors.text,
                                 opacity: 0.7
                               }}
                             >

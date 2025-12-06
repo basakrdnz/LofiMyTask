@@ -4,6 +4,7 @@ import { authApi } from '../api/auth';
 import { useAuthStore } from '../store/authStore';
 import { useThemeStore } from '../store/themeStore';
 import LoadingScreen from '../components/LoadingScreen';
+import ColorBends from '../components/ColorBends';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -43,178 +44,84 @@ export default function Register() {
     return <LoadingScreen />;
   }
 
+  // Safe colors fallback
+  const safeColors = colors || {
+    primary: '#8B7FA8',
+    secondary: '#A8C5D1',
+    accent: '#D4A5A5',
+    background: '#F5F5F5',
+    card: '#FFFFFF',
+    text: '#2D2D2D',
+    border: '#E0E0E0'
+  };
+
   return (
     <div 
-      className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
-      style={{ backgroundColor: colors.background }}
+      className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative"
     >
-      {/* Lofi Kafe Sahnesi - Arka Plan (Sade Versiyon) */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gece gökyüzü gradient */}
-        <div 
+      {/* ColorBends Background */}
+      <div className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <ColorBends
           className="absolute inset-0"
-          style={{
-            background: `linear-gradient(180deg, #1a0d2e 0%, #2d1b4e 50%, #1a0d2e 100%)`
-          }}
+          colors={['#a855f7', '#3b82f6', '#ec4899', '#8b5cf6', '#06b6d4', '#f59e0b']}
+          rotation={30}
+          speed={0.3}
+          scale={1.2}
+          frequency={1.4}
+          warpStrength={1.2}
+          mouseInfluence={0.8}
+          parallax={0.6}
+          noise={0.08}
+          transparent={false}
         />
-
-        {/* Yıldızlar - Daha az sayıda */}
-        {[...Array(15)].map((_, i) => (
-          <div
-            key={`star-${i}`}
-            className="absolute w-1 h-1 rounded-full animate-pixel-glow"
-            style={{
-              left: `${(i * 10) % 100}%`,
-              top: `${(i * 8) % 70}%`,
-              backgroundColor: '#FFFFFF',
-              boxShadow: `0 0 3px #FFFFFF`,
-              animationDelay: `${i * 0.4}s`,
-              animationDuration: `${3 + (i % 2)}s`
-            }}
-          />
-        ))}
-
-        {/* Neon Binalar - Sade versiyon (Sağ Taraf) */}
-        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 opacity-50">
-          {/* Bina 1 */}
-          <div 
-            className="absolute bottom-0 right-0 w-24 h-48"
-            style={{
-              backgroundColor: '#2d1b4e',
-              clipPath: 'polygon(100% 100%, 100% 40%, 90% 35%, 90% 100%)',
-            }}
-          />
-          {/* Bina 2 */}
-          <div 
-            className="absolute bottom-0 right-24 w-28 h-56"
-            style={{
-              backgroundColor: '#1a0d2e',
-              clipPath: 'polygon(100% 100%, 100% 45%, 92% 40%, 92% 100%)',
-            }}
-          />
-
-          {/* Neon Pencereler - Daha az sayıda */}
-          {[...Array(6)].map((_, i) => {
-            const positions = [
-              { right: '10%', bottom: '45%' },
-              { right: '10%', bottom: '60%' },
-              { right: '30%', bottom: '40%' },
-              { right: '30%', bottom: '55%' },
-              { right: '30%', bottom: '70%' },
-            ];
-            const pos = positions[i % positions.length];
-            return (
-              <div
-                key={`window-${i}`}
-                className="absolute w-2 h-3 animate-pixel-glow"
-                style={{
-                  ...pos,
-                  backgroundColor: i % 2 === 0 ? '#00E5FF' : '#FF1744',
-                  boxShadow: `0 0 8px ${i % 2 === 0 ? '#00E5FF' : '#FF1744'}`,
-                  animationDelay: `${i * 0.3}s`,
-                  animationDuration: '3s'
-                }}
-              />
-            );
-          })}
-        </div>
-
-        {/* İç Mekan - Sol Taraf (Sade) */}
-        <div className="absolute bottom-0 left-0 w-1/4 h-1/2 opacity-40">
-          {/* Masa */}
-          <div 
-            className="absolute bottom-16 left-8 w-32 h-20 rounded-lg"
-            style={{
-              backgroundColor: '#8B4513',
-            }}
-          />
-          
-          {/* Laptop */}
-          <div 
-            className="absolute bottom-24 left-12 w-24 h-14 rounded-sm"
-            style={{
-              backgroundColor: '#C0C0C0',
-            }}
-          >
-            <div 
-              className="absolute top-0 left-0 w-full h-3/4 rounded-t-sm"
-              style={{
-                backgroundColor: '#E8E8E8',
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Neon Şeritler - Çok az sayıda */}
-        {[...Array(2)].map((_, i) => (
-          <div
-            key={`neon-stripe-${i}`}
-            className="absolute animate-pixel-slide"
-            style={{
-              left: `${20 + i * 40}%`,
-              top: `${30 + i * 20}%`,
-              width: '150px',
-              height: '2px',
-              backgroundColor: i === 0 ? colors.primary : colors.secondary,
-              opacity: 0.2,
-              animationDelay: `${i * 1}s`,
-              animationDuration: '10s',
-            }}
-          />
-        ))}
       </div>
 
       {/* Ana İçerik - Form */}
-      <div 
-        className="max-w-md w-full space-y-8 animate-fadeInUp relative z-10 backdrop-blur-md rounded-3xl p-8 border-4"
-        style={{ 
-          backgroundColor: `${colors.card}95`,
-          borderColor: colors.border,
-          boxShadow: `0 8px 32px ${colors.primary}40`
-        }}
-      >
-        <div className="text-center">
-          {/* Logo */}
-          <div className="flex items-center justify-center space-x-3 mb-6">
-            <div 
-              className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
-              style={{ backgroundColor: colors.primary }}
-            >
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <h1 
-              className="text-4xl font-black"
-              style={{ 
-                color: colors.text,
-                fontFamily: "'Poppins', sans-serif"
-              }}
-            >
-              MyTask
-            </h1>
-          </div>
-
-          <h2 
-            className="text-2xl font-extrabold mb-2"
-            style={{ 
-              color: colors.text,
-              fontFamily: "'Poppins', sans-serif"
-            }}
+      <div className="w-full max-w-md relative z-10">
+        {/* Logo ve Başlık */}
+        <div className="text-center mb-8">
+          <div 
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-sm"
+            style={{ backgroundColor: safeColors.primary }}
           >
-            Yeni hesap oluşturun
-          </h2>
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h1 
+            className="text-3xl font-semibold mb-2"
+            style={{ color: '#FFFFFF' }}
+          >
+            MyTask
+          </h1>
           <p 
             className="text-sm"
-            style={{ 
-              color: colors.text,
-              opacity: 0.7,
-              fontFamily: "'Inter', sans-serif"
-            }}
+            style={{ color: '#FFFFFF', opacity: 0.8 }}
           >
-            Lofi dünyasına katılın ✨
+            Notlarınız ve görevleriniz için
           </p>
         </div>
+
+        {/* Form Card */}
+        <div 
+          className="rounded-2xl shadow-lg p-8 border backdrop-blur-md"
+          style={{ 
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            borderColor: 'rgba(255, 255, 255, 0.2)'
+          }}
+        >
+          <h2 
+            className="text-xl font-semibold mb-2 text-center"
+            style={{ color: '#FFFFFF' }}
+          >
+            Kayıt Ol
+          </h2>
+          <p 
+            className="text-sm text-center mb-6"
+            style={{ color: '#FFFFFF', opacity: 0.7 }}
+          >
+            Yeni hesap oluşturun
+          </p>
 
         <form 
           className="mt-8 space-y-6" 
@@ -222,12 +129,11 @@ export default function Register() {
         >
           {success && (
             <div 
-              className="px-4 py-3 rounded-2xl border-3"
+              className="px-4 py-3 rounded-lg text-sm"
               style={{
-                backgroundColor: `${colors.secondary}20`,
-                borderColor: colors.secondary,
-                color: colors.text,
-                fontFamily: "'Inter', sans-serif"
+                backgroundColor: '#D1FAE5',
+                color: '#065F46',
+                border: '1px solid #A7F3D0'
               }}
             >
               Kayıt başarılı! Giriş sayfasına yönlendiriliyorsunuz...
@@ -235,12 +141,11 @@ export default function Register() {
           )}
           {error && (
             <div 
-              className="px-4 py-3 rounded-2xl border-3"
+              className="px-4 py-3 rounded-lg text-sm"
               style={{
-                backgroundColor: `${colors.accent}20`,
-                borderColor: colors.accent,
-                color: colors.text,
-                fontFamily: "'Inter', sans-serif"
+                backgroundColor: '#FEE2E2',
+                color: '#DC2626',
+                border: '1px solid #FECACA'
               }}
             >
               {error}
@@ -252,10 +157,7 @@ export default function Register() {
               <label 
                 htmlFor="name" 
                 className="block text-sm font-medium mb-2"
-                style={{ 
-                  color: colors.text,
-                  fontFamily: "'Poppins', sans-serif"
-                }}
+                style={{ color: '#FFFFFF' }}
               >
                 Ad (İsteğe bağlı)
               </label>
@@ -263,19 +165,18 @@ export default function Register() {
                 id="name"
                 name="name"
                 type="text"
-                className="w-full px-4 py-3 rounded-2xl border-3 focus:outline-none focus:ring-2 transition-all"
+                className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                 style={{
-                  backgroundColor: colors.background,
-                  borderColor: colors.border,
-                  color: colors.text,
-                  fontFamily: "'Inter', sans-serif"
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  color: '#FFFFFF',
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = colors.primary;
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}30`;
+                  e.target.style.borderColor = safeColors.primary;
+                  e.target.style.boxShadow = `0 0 0 3px ${safeColors.primary}15`;
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = colors.border;
+                  e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                   e.target.style.boxShadow = 'none';
                 }}
                 placeholder="Adınız"
@@ -288,10 +189,7 @@ export default function Register() {
               <label 
                 htmlFor="email" 
                 className="block text-sm font-medium mb-2"
-                style={{ 
-                  color: colors.text,
-                  fontFamily: "'Poppins', sans-serif"
-                }}
+                style={{ color: '#FFFFFF' }}
               >
                 E-posta
               </label>
@@ -301,19 +199,18 @@ export default function Register() {
                 type="email"
                 autoComplete="email"
                 required
-                className="w-full px-4 py-3 rounded-2xl border-3 focus:outline-none focus:ring-2 transition-all"
+                className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                 style={{
-                  backgroundColor: colors.background,
-                  borderColor: colors.border,
-                  color: colors.text,
-                  fontFamily: "'Inter', sans-serif"
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  color: '#FFFFFF',
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = colors.primary;
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}30`;
+                  e.target.style.borderColor = safeColors.primary;
+                  e.target.style.boxShadow = `0 0 0 3px ${safeColors.primary}15`;
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = colors.border;
+                  e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                   e.target.style.boxShadow = 'none';
                 }}
                 placeholder="ornek@email.com"
@@ -326,10 +223,7 @@ export default function Register() {
               <label 
                 htmlFor="password" 
                 className="block text-sm font-medium mb-2"
-                style={{ 
-                  color: colors.text,
-                  fontFamily: "'Poppins', sans-serif"
-                }}
+                style={{ color: '#FFFFFF' }}
               >
                 Şifre (en az 6 karakter)
               </label>
@@ -340,19 +234,18 @@ export default function Register() {
                 autoComplete="new-password"
                 required
                 minLength={6}
-                className="w-full px-4 py-3 rounded-2xl border-3 focus:outline-none focus:ring-2 transition-all"
+                className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                 style={{
-                  backgroundColor: colors.background,
-                  borderColor: colors.border,
-                  color: colors.text,
-                  fontFamily: "'Inter', sans-serif"
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  color: '#FFFFFF',
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = colors.primary;
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}30`;
+                  e.target.style.borderColor = safeColors.primary;
+                  e.target.style.boxShadow = `0 0 0 3px ${safeColors.primary}15`;
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = colors.border;
+                  e.target.style.borderColor = 'rgba(255, 255, 255, 0.3)';
                   e.target.style.boxShadow = 'none';
                 }}
                 placeholder="••••••••"
@@ -366,41 +259,26 @@ export default function Register() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg"
+              className="w-full py-3 px-4 rounded-lg font-medium text-white transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               style={{
-                backgroundColor: colors.primary,
-                color: 'white',
-                fontFamily: "'Poppins', sans-serif"
+                backgroundColor: safeColors.primary,
               }}
             >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <span className="animate-pixel-bounce mr-2">⚡</span>
-                  Kayıt yapılıyor...
-                </span>
-              ) : (
-                <span className="flex items-center justify-center">
-                  <span className="mr-2">✨</span>
-                  Kayıt ol
-                </span>
-              )}
+              {loading ? 'Kayıt yapılıyor...' : 'Kayıt Ol'}
             </button>
           </div>
 
-          <div className="text-center">
+          <div className="mt-6 text-center">
             <Link
               to="/login"
-              className="text-sm font-medium transition-all hover:underline inline-flex items-center"
-              style={{ 
-                color: colors.primary,
-                fontFamily: "'Inter', sans-serif"
-              }}
+              className="text-sm font-medium transition-colors hover:underline"
+              style={{ color: safeColors.primary }}
             >
-              <span className="mr-1">💫</span>
               Zaten hesabınız var mı? Giriş yapın
             </Link>
           </div>
         </form>
+        </div>
       </div>
     </div>
   );

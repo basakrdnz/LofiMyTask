@@ -4,6 +4,7 @@ import { authApi } from '../api/auth';
 import { useAuthStore } from '../store/authStore';
 import { useThemeStore } from '../store/themeStore';
 import LoadingScreen from '../components/LoadingScreen';
+import ColorBends from '../components/ColorBends';
 
 export default function Login() {
   const [email, setEmail] = useState('');
@@ -48,35 +49,22 @@ export default function Login() {
   return (
     <div 
       className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative"
-      style={{ 
-        background: `linear-gradient(135deg, ${safeColors.background} 0%, ${safeColors.card} 100%)`
-      }}
     >
-      {/* Subtle lofi texture overlay - çok hafif */}
-      <div 
-        className="absolute inset-0 opacity-[0.02] pointer-events-none"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
-        }}
-      />
-
-      {/* Subtle floating elements - minimal lofi */}
-      <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {[...Array(3)].map((_, i) => (
-          <div
-            key={i}
-            className="absolute rounded-full opacity-10"
-            style={{
-              width: `${20 + i * 10}px`,
-              height: `${20 + i * 10}px`,
-              backgroundColor: safeColors.primary,
-              left: `${15 + i * 25}%`,
-              top: `${20 + i * 15}%`,
-              animation: `float 6s ease-in-out infinite`,
-              animationDelay: `${i * 0.5}s`
-            }}
-          />
-        ))}
+      {/* ColorBends Background */}
+      <div className="absolute inset-0 overflow-hidden" style={{ backgroundColor: '#000000' }}>
+        <ColorBends
+          className="absolute inset-0"
+          colors={['#a855f7', '#3b82f6', '#ec4899', '#8b5cf6', '#06b6d4', '#f59e0b']}
+          rotation={30}
+          speed={0.3}
+          scale={1.2}
+          frequency={1.4}
+          warpStrength={1.2}
+          mouseInfluence={0.8}
+          parallax={0.6}
+          noise={0.08}
+          transparent={false}
+        />
       </div>
 
       {/* Ana İçerik - Sade ve Minimal */}
@@ -93,13 +81,13 @@ export default function Login() {
           </div>
           <h1 
             className="text-3xl font-semibold mb-2"
-            style={{ color: safeColors.text }}
+            style={{ color: '#FFFFFF' }}
           >
             MyTask
           </h1>
           <p 
             className="text-sm"
-            style={{ color: safeColors.text, opacity: 0.6 }}
+            style={{ color: '#FFFFFF', opacity: 0.8 }}
           >
             Notlarınız ve görevleriniz için
           </p>
@@ -107,21 +95,21 @@ export default function Login() {
 
         {/* Form Card */}
         <div 
-          className="rounded-2xl shadow-lg p-8 border"
+          className="rounded-2xl shadow-lg p-8 border backdrop-blur-md"
           style={{ 
-            backgroundColor: safeColors.card,
-            borderColor: safeColors.border
+            backgroundColor: 'rgba(255, 255, 255, 0.1)',
+            borderColor: 'rgba(255, 255, 255, 0.2)'
           }}
         >
           <h2 
             className="text-xl font-semibold mb-2 text-center"
-            style={{ color: safeColors.text }}
+            style={{ color: '#FFFFFF' }}
           >
             Giriş Yap
           </h2>
           <p 
             className="text-sm text-center mb-6"
-            style={{ color: safeColors.text, opacity: 0.5 }}
+            style={{ color: '#FFFFFF', opacity: 0.7 }}
           >
             Hesabınıza giriş yapın
           </p>
@@ -144,7 +132,7 @@ export default function Login() {
               <label 
                 htmlFor="email" 
                 className="block text-sm font-medium mb-2"
-                style={{ color: safeColors.text }}
+                style={{ color: '#FFFFFF' }}
               >
                 E-posta
               </label>
@@ -156,9 +144,9 @@ export default function Login() {
                 required
                 className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                 style={{
-                  backgroundColor: safeColors.background,
-                  borderColor: safeColors.border,
-                  color: safeColors.text,
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  color: '#FFFFFF',
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = safeColors.primary;
@@ -178,7 +166,7 @@ export default function Login() {
               <label 
                 htmlFor="password" 
                 className="block text-sm font-medium mb-2"
-                style={{ color: safeColors.text }}
+                style={{ color: '#FFFFFF' }}
               >
                 Şifre
               </label>
@@ -190,9 +178,9 @@ export default function Login() {
                 required
                 className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                 style={{
-                  backgroundColor: safeColors.background,
-                  borderColor: safeColors.border,
-                  color: safeColors.text,
+                  backgroundColor: 'rgba(255, 255, 255, 0.1)',
+                  borderColor: 'rgba(255, 255, 255, 0.3)',
+                  color: '#FFFFFF',
                 }}
                 onFocus={(e) => {
                   e.target.style.borderColor = safeColors.primary;
@@ -233,7 +221,7 @@ export default function Login() {
 
         {/* Subtle lofi element - çok minimal */}
         <div className="mt-8 text-center">
-          <p className="text-xs" style={{ color: safeColors.text, opacity: 0.4 }}>
+          <p className="text-xs" style={{ color: '#FFFFFF', opacity: 0.5 }}>
             ✨ Minimal & Productive
           </p>
         </div>

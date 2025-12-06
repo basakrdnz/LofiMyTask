@@ -39,26 +39,36 @@ export default function Layout({ children }: LayoutProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
+  // Safe colors fallback
+  const safeColors = colors || {
+    primary: '#8B7FA8',
+    secondary: '#A8C5D1',
+    accent: '#D4A5A5',
+    background: '#F5F5F5',
+    card: '#FFFFFF',
+    text: '#2D2D2D',
+    border: '#E0E0E0'
+  };
+
   return (
-    <div style={{ minHeight: '100vh', backgroundColor: colors.background }}>
+    <div style={{ minHeight: '100vh', backgroundColor: safeColors.background }}>
       <nav 
-        className="shadow-md"
-        style={{ backgroundColor: colors.card, borderBottom: `4px solid ${colors.border}` }}
+        className="shadow-sm border-b"
+        style={{ backgroundColor: safeColors.card, borderColor: safeColors.border }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex justify-between h-16 items-center">
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2">
-                <div className="w-10 h-10 rounded-2xl flex items-center justify-center shadow-md transform hover:scale-110 transition-all" style={{ backgroundColor: colors.primary }}>
+                <div className="w-10 h-10 rounded-xl flex items-center justify-center shadow-sm" style={{ backgroundColor: safeColors.primary }}>
                   <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
                   </svg>
                 </div>
                 <h1 
-                  className="text-xl font-black" 
+                  className="text-lg font-semibold" 
                   style={{ 
-                    color: colors.text,
-                    fontFamily: "'Poppins', sans-serif"
+                    color: safeColors.text
                   }}
                 >
                   MyTask
@@ -71,8 +81,8 @@ export default function Layout({ children }: LayoutProps) {
                     location.pathname === '/dashboard' ? 'shadow-sm' : ''
                   }`}
                   style={{
-                    backgroundColor: location.pathname === '/dashboard' ? colors.primary : 'transparent',
-                    color: location.pathname === '/dashboard' ? 'white' : colors.text
+                    backgroundColor: location.pathname === '/dashboard' ? safeColors.primary : 'transparent',
+                    color: location.pathname === '/dashboard' ? 'white' : safeColors.text
                   }}
                 >
                   Notlar
@@ -83,8 +93,8 @@ export default function Layout({ children }: LayoutProps) {
                     location.pathname === '/calendar' ? 'shadow-sm' : ''
                   }`}
                   style={{
-                    backgroundColor: location.pathname === '/calendar' ? colors.primary : 'transparent',
-                    color: location.pathname === '/calendar' ? 'white' : colors.text
+                    backgroundColor: location.pathname === '/calendar' ? safeColors.primary : 'transparent',
+                    color: location.pathname === '/calendar' ? 'white' : safeColors.text
                   }}
                 >
                   Takvim
@@ -92,30 +102,30 @@ export default function Layout({ children }: LayoutProps) {
               </nav>
             </div>
             <div className="flex items-center space-x-4">
-              <span className="text-sm font-medium" style={{ color: colors.text }}>
-                👤 {user?.name || user?.email}
+              <span className="text-sm font-medium" style={{ color: safeColors.text }}>
+                {user?.name || user?.email}
               </span>
               
               {/* Tema Seçici */}
               <div className="relative" ref={menuRef}>
                 <button
                   onClick={() => setIsThemeMenuOpen(!isThemeMenuOpen)}
-                  className="p-2 rounded-2xl transition-all hover:scale-110"
+                  className="p-2 rounded-lg transition-all hover:opacity-90"
                   style={{
-                    backgroundColor: isThemeMenuOpen ? colors.primary : 'transparent',
-                    color: isThemeMenuOpen ? 'white' : colors.text
+                    backgroundColor: isThemeMenuOpen ? safeColors.primary : 'transparent',
+                    color: isThemeMenuOpen ? 'white' : safeColors.text
                   }}
                   title="Tema Değiştir"
                 >
-                  <span className="text-xl">🎨</span>
+                  <span className="text-lg">🎨</span>
                 </button>
                 
                 {isThemeMenuOpen && (
                   <div 
-                    className="absolute right-0 mt-2 w-48 rounded-2xl shadow-xl border-3 z-50"
+                    className="absolute right-0 mt-2 w-48 rounded-xl shadow-lg border z-50"
                     style={{
-                      backgroundColor: colors.card,
-                      borderColor: colors.border
+                      backgroundColor: safeColors.card,
+                      borderColor: safeColors.border
                     }}
                   >
                     <div className="py-2">
@@ -127,15 +137,15 @@ export default function Layout({ children }: LayoutProps) {
                             setIsThemeMenuOpen(false);
                           }}
                           className={`w-full text-left px-4 py-2 flex items-center space-x-2 transition-all ${
-                            theme === t.value ? 'font-bold' : ''
+                            theme === t.value ? 'font-semibold' : ''
                           }`}
                           style={{
-                            backgroundColor: theme === t.value ? colors.primary + '20' : 'transparent',
-                            color: colors.text
+                            backgroundColor: theme === t.value ? safeColors.primary + '10' : 'transparent',
+                            color: safeColors.text
                           }}
                           onMouseEnter={(e) => {
                             if (theme !== t.value) {
-                              e.currentTarget.style.backgroundColor = colors.secondary + '20';
+                              e.currentTarget.style.backgroundColor = safeColors.secondary + '10';
                             }
                           }}
                           onMouseLeave={(e) => {
@@ -144,7 +154,7 @@ export default function Layout({ children }: LayoutProps) {
                             }
                           }}
                         >
-                          <span className="text-lg">{t.emoji}</span>
+                          <span className="text-base">{t.emoji}</span>
                           <span>{t.label}</span>
                           {theme === t.value && <span className="ml-auto">✓</span>}
                         </button>
@@ -156,9 +166,9 @@ export default function Layout({ children }: LayoutProps) {
 
               <button
                 onClick={handleLogout}
-                className="px-3 py-1.5 rounded-2xl text-sm font-medium transition-all hover:scale-105"
+                className="px-3 py-1.5 rounded-lg text-sm font-medium transition-all hover:opacity-90"
                 style={{
-                  backgroundColor: colors.primary,
+                  backgroundColor: safeColors.primary,
                   color: 'white'
                 }}
               >
