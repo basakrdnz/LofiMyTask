@@ -13,7 +13,7 @@ import Layout from './components/Layout';
 import LoadingScreen from './components/LoadingScreen';
 
 function App() {
-  const { token, user, setAuth, logout } = useAuthStore();
+  const { token, setAuth, logout } = useAuthStore();
   const { colors } = useThemeStore();
   const [isHydrated, setIsHydrated] = useState(false);
   const [isRefreshing, setIsRefreshing] = useState(false);
