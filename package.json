@@ -13,8 +13,7 @@
     "start": "concurrently \"npm run start --workspace=backend\" \"npm run preview --workspace=frontend\"",
     "test": "npm run test --workspace=backend && npm run test --workspace=frontend",
     "env:check": "node scripts/env-check.js",
-    "git:feature": "node -e \"const branch = process.argv[1]; require('child_process').execSync('git checkout develop && git pull && git checkout -b feature/' + branch, {stdio: 'inherit'})\"",
-    "git:deploy": "node -e \"require('child_process').execSync('git checkout main && git merge develop && git push origin main', {stdio: 'inherit'})\""
+    "db:studio": "cd backend && npm run prisma:studio"
   },
   "devDependencies": {
     "concurrently": "^8.2.2"

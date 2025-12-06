@@ -1,7 +1,9 @@
 import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { authApi } from '../api/auth';
+import { useAuthStore } from '../store/authStore';
 import { useThemeStore } from '../store/themeStore';
+import LoadingScreen from '../components/LoadingScreen';
 
 export default function Register() {
   const [email, setEmail] = useState('');
@@ -11,6 +13,7 @@ export default function Register() {
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const setAuth = useAuthStore((state) => state.setAuth);
   const { colors } = useThemeStore();
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -20,20 +23,25 @@ export default function Register() {
     setLoading(true);
 
     try {
-      await authApi.register({ email, password, name });
+      const response = await authApi.register({ email, password, name });
+      // Token ve kullanıcı bilgilerini kaydet
+      setAuth(response.user, response.token);
       setSuccess(true);
-      // 2 saniye sonra giriş sayfasına yönlendir
+      // Welcome sayfasına yönlendir
       setTimeout(() => {
-        navigate('/login');
-      }, 2000);
+        navigate('/welcome');
+      }, 1500);
     } catch (err: any) {
       console.error('Register error:', err);
       const errorMessage = err.response?.data?.error || err.message || 'Kayıt başarısız';
       setError(errorMessage);
-    } finally {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div 

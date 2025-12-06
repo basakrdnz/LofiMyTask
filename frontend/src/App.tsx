@@ -21,9 +21,10 @@ function App() {
   // Store'ların hydrate olmasını bekle
   useEffect(() => {
     // Zustand persist'in hydration'ı tamamlanmasını bekle
+    // Daha uzun timeout ile hydration'ın tamamlanmasını garanti et
     const timer = setTimeout(() => {
       setIsHydrated(true);
-    }, 100);
+    }, 300); // 100ms'den 300ms'ye çıkarıldı
 
     return () => clearTimeout(timer);
   }, []);
