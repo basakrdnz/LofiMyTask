@@ -89,68 +89,76 @@ export default function Dashboard() {
       className="min-h-screen p-6 transition-colors"
       style={{ backgroundColor: colors.background }}
     >
-      <div className="max-w-7xl mx-auto animate-fadeInUp">
-        {/* Header */}
-        <div className="mb-6">
+      <div className="max-w-7xl mx-auto">
+        {/* Header - Sade */}
+        <div className="mb-8">
           <h1 
-            className="text-5xl font-black mb-2 animate-slideInDown" 
+            className="text-3xl font-semibold mb-2" 
             style={{ 
-              color: colors.text,
-              fontFamily: "'Poppins', sans-serif",
-              textShadow: `0 2px 10px ${colors.primary}20`
+              color: colors.text
             }}
           >
-            📖 MyTask
+            Dashboard
           </h1>
           <p 
-            className="text-sm animate-slideInUp" 
+            className="text-sm" 
             style={{ 
               color: colors.text, 
-              opacity: 0.7,
-              fontFamily: "'Inter', sans-serif"
+              opacity: 0.6
             }}
           >
-            Notlarınız ve görevleriniz burada
+            Notlarınız ve görevleriniz
           </p>
         </div>
 
-        {/* Tabs */}
-        <div className="flex space-x-2 mb-6">
+        {/* Tabs - Minimal */}
+        <div className="flex space-x-1 mb-6 border-b" style={{ borderColor: colors.border }}>
           <button
             onClick={() => setActiveTab('notes')}
-            className={`px-6 py-3 rounded-t-2xl font-semibold transition-all transform ${
-              activeTab === 'notes'
-                ? 'shadow-lg scale-105 animate-pulse-slow'
-                : 'opacity-70 hover:opacity-100 hover:scale-102'
+            className={`px-6 py-3 font-medium text-sm transition-colors relative ${
+              activeTab === 'notes' ? '' : 'opacity-60 hover:opacity-100'
             }`}
             style={{
-              backgroundColor: activeTab === 'notes' ? colors.card : colors.background,
-              color: colors.text,
-              borderBottom: activeTab === 'notes' ? `3px solid ${colors.primary}` : 'none'
+              color: activeTab === 'notes' ? colors.primary : colors.text,
             }}
           >
-            📝 Notlar ({notes.length})
+            Notlar ({notes.length})
+            {activeTab === 'notes' && (
+              <div 
+                className="absolute bottom-0 left-0 right-0 h-0.5"
+                style={{ backgroundColor: colors.primary }}
+              />
+            )}
           </button>
           <button
             onClick={() => setActiveTab('tasks')}
-            className={`px-6 py-3 rounded-t-2xl font-semibold transition-all transform ${
-              activeTab === 'tasks'
-                ? 'shadow-lg scale-105 animate-pulse-slow'
-                : 'opacity-70 hover:opacity-100 hover:scale-102'
+            className={`px-6 py-3 font-medium text-sm transition-colors relative ${
+              activeTab === 'tasks' ? '' : 'opacity-60 hover:opacity-100'
             }`}
             style={{
-              backgroundColor: activeTab === 'tasks' ? colors.card : colors.background,
-              color: colors.text,
-              borderBottom: activeTab === 'tasks' ? `3px solid ${colors.primary}` : 'none'
+              color: activeTab === 'tasks' ? colors.primary : colors.text,
             }}
           >
-            ✅ Görevler ({tasks.length})
+            Görevler ({tasks.length})
+            {activeTab === 'tasks' && (
+              <div 
+                className="absolute bottom-0 left-0 right-0 h-0.5"
+                style={{ backgroundColor: colors.primary }}
+              />
+            )}
           </button>
         </div>
 
-        {/* Error */}
+        {/* Error - Sade */}
         {error && (
-          <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded mb-4">
+          <div 
+            className="px-4 py-3 rounded-lg mb-4 text-sm"
+            style={{
+              backgroundColor: '#FEE2E2',
+              color: '#DC2626',
+              border: '1px solid #FECACA'
+            }}
+          >
             {error}
           </div>
         )}
@@ -208,9 +216,9 @@ export default function Dashboard() {
         <div className="space-y-6">
           {activeTab === 'notes' ? (
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold" style={{ color: colors.text }}>
-                  📝 Notlarım
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-lg font-semibold" style={{ color: colors.text }}>
+                  Notlarım
                 </h2>
                 <button
                   onClick={() => {
@@ -218,24 +226,28 @@ export default function Dashboard() {
                     setShowNoteForm(true);
                     setShowTaskForm(false);
                   }}
-                  className="px-4 py-2 rounded-2xl font-semibold shadow-md hover:shadow-lg transition-all transform hover:scale-110 active:scale-95 animate-bounce-slow"
+                  className="px-4 py-2 rounded-lg font-medium text-white transition-all hover:opacity-90 shadow-sm"
                   style={{
                     backgroundColor: colors.primary,
-                    color: 'white',
-                    fontFamily: "'Poppins', sans-serif"
                   }}
                 >
-                  ✨ + Yeni Not
+                  + Yeni Not
                 </button>
               </div>
 
               {notes.length === 0 ? (
-                <div className="text-center py-12 rounded-3xl border-4" style={{ backgroundColor: colors.card, borderColor: colors.border }}>
-                  <div className="text-6xl mb-4">📄</div>
-                  <p className="text-lg font-medium" style={{ color: colors.text }}>
+                <div 
+                  className="text-center py-16 rounded-xl border"
+                  style={{ 
+                    backgroundColor: colors.card, 
+                    borderColor: colors.border 
+                  }}
+                >
+                  <div className="text-4xl mb-3 opacity-40">📄</div>
+                  <p className="text-base font-medium mb-1" style={{ color: colors.text }}>
                     Henüz notunuz yok
                   </p>
-                  <p className="text-sm mt-2" style={{ color: colors.text, opacity: 0.7 }}>
+                  <p className="text-sm" style={{ color: colors.text, opacity: 0.6 }}>
                     İlk notunuzu oluşturmak için yukarıdaki butona tıklayın
                   </p>
                 </div>
@@ -258,9 +270,9 @@ export default function Dashboard() {
             </div>
           ) : (
             <div>
-              <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl font-bold" style={{ color: colors.text }}>
-                  ✅ Görevlerim
+              <div className="flex justify-between items-center mb-6">
+                <h2 className="text-lg font-semibold" style={{ color: colors.text }}>
+                  Görevlerim
                 </h2>
                 <button
                   onClick={() => {
@@ -268,24 +280,28 @@ export default function Dashboard() {
                     setShowTaskForm(true);
                     setShowNoteForm(false);
                   }}
-                  className="px-4 py-2 rounded-2xl font-semibold shadow-md hover:shadow-lg transition-all transform hover:scale-110 active:scale-95 animate-bounce-slow"
+                  className="px-4 py-2 rounded-lg font-medium text-white transition-all hover:opacity-90 shadow-sm"
                   style={{
                     backgroundColor: colors.primary,
-                    color: 'white',
-                    fontFamily: "'Poppins', sans-serif"
                   }}
                 >
-                  ✨ + Yeni Görev
+                  + Yeni Görev
                 </button>
               </div>
 
               {tasks.length === 0 ? (
-                <div className="text-center py-12 rounded-3xl border-4" style={{ backgroundColor: colors.card, borderColor: colors.border }}>
-                  <div className="text-6xl mb-4">✅</div>
-                  <p className="text-lg font-medium" style={{ color: colors.text }}>
+                <div 
+                  className="text-center py-16 rounded-xl border"
+                  style={{ 
+                    backgroundColor: colors.card, 
+                    borderColor: colors.border 
+                  }}
+                >
+                  <div className="text-4xl mb-3 opacity-40">✅</div>
+                  <p className="text-base font-medium mb-1" style={{ color: colors.text }}>
                     Henüz göreviniz yok
                   </p>
-                  <p className="text-sm mt-2" style={{ color: colors.text, opacity: 0.7 }}>
+                  <p className="text-sm" style={{ color: colors.text, opacity: 0.6 }}>
                     İlk görevinizi oluşturmak için yukarıdaki butona tıklayın
                   </p>
                 </div>

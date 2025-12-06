@@ -17,13 +17,13 @@ interface ThemeColors {
 
 const themes: Record<Theme, ThemeColors> = {
   library: {
-    primary: '#BA68C8', // Yumuşak mor (daha tatlış)
-    secondary: '#4DD0E1', // Yumuşak turkuaz (daha uyumlu)
-    accent: '#FF6B9D', // Yumuşak pembe-kırmızı (daha tatlış)
-    background: '#1a0d2e', // Koyu mor (Gece gökyüzü)
-    card: '#2d1b4e', // Orta mor (Bina)
-    text: '#F3E5F5', // Çok açık mor (Metin - daha yumuşak)
-    border: '#9C27B0' // Daha belirgin mor (Kenarlık - yoğun)
+    primary: '#8B7FA8', // Soft mor-lavanta (sade, pazarlanabilir)
+    secondary: '#A8C5D1', // Soft mavi (sakin, profesyonel)
+    accent: '#D4A5A5', // Soft pembe (warm, friendly)
+    background: '#F5F5F5', // Açık gri-beyaz (temiz, minimal)
+    card: '#FFFFFF', // Beyaz (modern, sade)
+    text: '#2D2D2D', // Koyu gri (okunabilir, profesyonel)
+    border: '#E0E0E0' // Açık gri (subtle, minimal)
   },
   notebook: {
     primary: '#42A5F5', // Yumuşak mavi

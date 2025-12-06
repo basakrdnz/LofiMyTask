@@ -110,21 +110,18 @@ export default function Calendar() {
     <div className="max-w-6xl mx-auto p-6 animate-fadeInUp">
       <div className="mb-6">
         <h1 
-          className="text-5xl font-black mb-2 animate-slideInDown" 
+          className="text-3xl font-semibold mb-2" 
           style={{ 
-            color: colors.text,
-            fontFamily: "'Poppins', sans-serif",
-            textShadow: `0 2px 10px ${colors.primary}20`
+            color: colors.text
           }}
         >
-          📅 Takvim Görünümü
+          Takvim
         </h1>
         <p 
-          className="text-sm animate-slideInUp" 
+          className="text-sm" 
           style={{ 
             color: colors.text, 
-            opacity: 0.7,
-            fontFamily: "'Inter', sans-serif"
+            opacity: 0.6
           }}
         >
           Tamamlanan görevler için ⭐, deadline'lar için ⚠️

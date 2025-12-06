@@ -75,7 +75,7 @@ function App() {
         <Routes>
           <Route
             path="/"
-            element={<Home />}
+            element={token ? <Navigate to="/dashboard" replace /> : <Home />}
           />
           <Route
             path="/home"

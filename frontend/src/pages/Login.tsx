@@ -13,6 +13,17 @@ export default function Login() {
   const navigate = useNavigate();
   const setAuth = useAuthStore((state) => state.setAuth);
   const { colors } = useThemeStore();
+  
+  // Safe colors fallback
+  const safeColors = colors || {
+    primary: '#8B7FA8',
+    secondary: '#A8C5D1',
+    accent: '#D4A5A5',
+    background: '#F5F5F5',
+    card: '#FFFFFF',
+    text: '#2D2D2D',
+    border: '#E0E0E0'
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -36,204 +47,104 @@ export default function Login() {
 
   return (
     <div 
-      className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative overflow-hidden"
-      style={{ backgroundColor: colors.background }}
+      className="min-h-screen flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8 relative"
+      style={{ 
+        background: `linear-gradient(135deg, ${safeColors.background} 0%, ${safeColors.card} 100%)`
+      }}
     >
-      {/* Lofi Kafe Sahnesi - Arka Plan (Sade Versiyon) */}
+      {/* Subtle lofi texture overlay - çok hafif */}
+      <div 
+        className="absolute inset-0 opacity-[0.02] pointer-events-none"
+        style={{
+          backgroundImage: `url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23000000' fill-opacity='1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E")`,
+        }}
+      />
+
+      {/* Subtle floating elements - minimal lofi */}
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
-        {/* Gece gökyüzü gradient */}
-        <div 
-          className="absolute inset-0"
-          style={{
-            background: `linear-gradient(180deg, #1a0d2e 0%, #2d1b4e 50%, #1a0d2e 100%)`
-          }}
-        />
-
-        {/* Yıldızlar - Daha az sayıda */}
-        {[...Array(15)].map((_, i) => (
+        {[...Array(3)].map((_, i) => (
           <div
-            key={`star-${i}`}
-            className="absolute w-1 h-1 rounded-full animate-pixel-glow"
+            key={i}
+            className="absolute rounded-full opacity-10"
             style={{
-              left: `${(i * 10) % 100}%`,
-              top: `${(i * 8) % 70}%`,
-              backgroundColor: '#FFFFFF',
-              boxShadow: `0 0 3px #FFFFFF`,
-              animationDelay: `${i * 0.4}s`,
-              animationDuration: `${3 + (i % 2)}s`
-            }}
-          />
-        ))}
-
-        {/* Neon Binalar - Sade versiyon (Sağ Taraf) */}
-        <div className="absolute bottom-0 right-0 w-1/2 h-1/2 opacity-50">
-          {/* Bina 1 */}
-          <div 
-            className="absolute bottom-0 right-0 w-24 h-48"
-            style={{
-              backgroundColor: '#2d1b4e',
-              clipPath: 'polygon(100% 100%, 100% 40%, 90% 35%, 90% 100%)',
-            }}
-          />
-          {/* Bina 2 */}
-          <div 
-            className="absolute bottom-0 right-24 w-28 h-56"
-            style={{
-              backgroundColor: '#1a0d2e',
-              clipPath: 'polygon(100% 100%, 100% 45%, 92% 40%, 92% 100%)',
-            }}
-          />
-
-          {/* Neon Pencereler - Daha az sayıda */}
-          {[...Array(6)].map((_, i) => {
-            const positions = [
-              { right: '10%', bottom: '45%' },
-              { right: '10%', bottom: '60%' },
-              { right: '30%', bottom: '40%' },
-              { right: '30%', bottom: '55%' },
-              { right: '30%', bottom: '70%' },
-            ];
-            const pos = positions[i % positions.length];
-            return (
-              <div
-                key={`window-${i}`}
-                className="absolute w-2 h-3 animate-pixel-glow"
-                style={{
-                  ...pos,
-                  backgroundColor: i % 2 === 0 ? '#00E5FF' : '#FF1744',
-                  boxShadow: `0 0 8px ${i % 2 === 0 ? '#00E5FF' : '#FF1744'}`,
-                  animationDelay: `${i * 0.3}s`,
-                  animationDuration: '3s'
-                }}
-              />
-            );
-          })}
-        </div>
-
-        {/* İç Mekan - Sol Taraf (Sade) */}
-        <div className="absolute bottom-0 left-0 w-1/4 h-1/2 opacity-40">
-          {/* Masa */}
-          <div 
-            className="absolute bottom-16 left-8 w-32 h-20 rounded-lg"
-            style={{
-              backgroundColor: '#8B4513',
-            }}
-          />
-          
-          {/* Laptop */}
-          <div 
-            className="absolute bottom-24 left-12 w-24 h-14 rounded-sm"
-            style={{
-              backgroundColor: '#C0C0C0',
-            }}
-          >
-            <div 
-              className="absolute top-0 left-0 w-full h-3/4 rounded-t-sm"
-              style={{
-                backgroundColor: '#E8E8E8',
-              }}
-            />
-          </div>
-        </div>
-
-        {/* Neon Şeritler - Çok az sayıda */}
-        {[...Array(2)].map((_, i) => (
-          <div
-            key={`neon-stripe-${i}`}
-            className="absolute animate-pixel-slide"
-            style={{
-              left: `${20 + i * 40}%`,
-              top: `${30 + i * 20}%`,
-              width: '150px',
-              height: '2px',
-              backgroundColor: i === 0 ? colors.primary : colors.secondary,
-              opacity: 0.2,
-              animationDelay: `${i * 1}s`,
-              animationDuration: '10s',
+              width: `${20 + i * 10}px`,
+              height: `${20 + i * 10}px`,
+              backgroundColor: safeColors.primary,
+              left: `${15 + i * 25}%`,
+              top: `${20 + i * 15}%`,
+              animation: `float 6s ease-in-out infinite`,
+              animationDelay: `${i * 0.5}s`
             }}
           />
         ))}
       </div>
 
-      {/* Ana İçerik - Form */}
-      <div 
-        className="max-w-md w-full space-y-8 animate-fadeInUp relative z-10 backdrop-blur-md rounded-3xl p-8 border-4"
-        style={{ 
-          backgroundColor: `${colors.card}95`,
-          borderColor: colors.border,
-          boxShadow: `0 8px 32px ${colors.primary}40`
-        }}
-      >
-        <div className="text-center">
-          {/* Logo */}
-          <div className="flex items-center justify-center space-x-3 mb-6">
-            <div 
-              className="w-16 h-16 rounded-2xl flex items-center justify-center shadow-lg"
-              style={{ backgroundColor: colors.primary }}
-            >
-              <svg className="w-10 h-10 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
-              </svg>
-            </div>
-            <h1 
-              className="text-4xl font-black"
-              style={{ 
-                color: colors.text,
-                fontFamily: "'Poppins', sans-serif"
-              }}
-            >
-              MyTask
-            </h1>
-          </div>
-
-          <h2 
-            className="text-2xl font-extrabold mb-2"
-            style={{ 
-              color: colors.text,
-              fontFamily: "'Poppins', sans-serif"
-            }}
+      {/* Ana İçerik - Sade ve Minimal */}
+      <div className="w-full max-w-md relative z-10">
+        {/* Logo ve Başlık */}
+        <div className="text-center mb-8">
+          <div 
+            className="inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-4 shadow-sm"
+            style={{ backgroundColor: safeColors.primary }}
           >
-            Hesabınıza giriş yapın
-          </h2>
+            <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+            </svg>
+          </div>
+          <h1 
+            className="text-3xl font-semibold mb-2"
+            style={{ color: safeColors.text }}
+          >
+            MyTask
+          </h1>
           <p 
             className="text-sm"
-            style={{ 
-              color: colors.text,
-              opacity: 0.7,
-              fontFamily: "'Inter', sans-serif"
-            }}
+            style={{ color: safeColors.text, opacity: 0.6 }}
           >
-            Lofi dünyasına hoş geldiniz ✨
+            Notlarınız ve görevleriniz için
           </p>
         </div>
 
-        <form 
-          className="mt-8 space-y-6"
-          onSubmit={handleSubmit}
+        {/* Form Card */}
+        <div 
+          className="rounded-2xl shadow-lg p-8 border"
+          style={{ 
+            backgroundColor: safeColors.card,
+            borderColor: safeColors.border
+          }}
         >
-          {error && (
-            <div 
-              className="px-4 py-3 rounded-2xl border-3"
-              style={{
-                backgroundColor: `${colors.accent}20`,
-                borderColor: colors.accent,
-                color: colors.text,
-                fontFamily: "'Inter', sans-serif"
-              }}
-            >
-              {error}
-            </div>
-          )}
+          <h2 
+            className="text-xl font-semibold mb-2 text-center"
+            style={{ color: safeColors.text }}
+          >
+            Giriş Yap
+          </h2>
+          <p 
+            className="text-sm text-center mb-6"
+            style={{ color: safeColors.text, opacity: 0.5 }}
+          >
+            Hesabınıza giriş yapın
+          </p>
 
-          <div className="space-y-4">
+          <form onSubmit={handleSubmit} className="space-y-5">
+            {error && (
+              <div 
+                className="px-4 py-3 rounded-lg text-sm"
+                style={{
+                  backgroundColor: '#FEE2E2',
+                  color: '#DC2626',
+                  border: '1px solid #FECACA'
+                }}
+              >
+                {error}
+              </div>
+            )}
+
             <div>
               <label 
                 htmlFor="email" 
                 className="block text-sm font-medium mb-2"
-                style={{ 
-                  color: colors.text,
-                  fontFamily: "'Poppins', sans-serif"
-                }}
+                style={{ color: safeColors.text }}
               >
                 E-posta
               </label>
@@ -243,19 +154,18 @@ export default function Login() {
                 type="email"
                 autoComplete="email"
                 required
-                className="w-full px-4 py-3 rounded-2xl border-3 focus:outline-none focus:ring-2 transition-all"
+                className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                 style={{
-                  backgroundColor: colors.background,
-                  borderColor: colors.border,
-                  color: colors.text,
-                  fontFamily: "'Inter', sans-serif"
+                  backgroundColor: safeColors.background,
+                  borderColor: safeColors.border,
+                  color: safeColors.text,
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = colors.primary;
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}30`;
+                  e.target.style.borderColor = safeColors.primary;
+                  e.target.style.boxShadow = `0 0 0 3px ${safeColors.primary}15`;
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = colors.border;
+                  e.target.style.borderColor = safeColors.border;
                   e.target.style.boxShadow = 'none';
                 }}
                 placeholder="ornek@email.com"
@@ -268,10 +178,7 @@ export default function Login() {
               <label 
                 htmlFor="password" 
                 className="block text-sm font-medium mb-2"
-                style={{ 
-                  color: colors.text,
-                  fontFamily: "'Poppins', sans-serif"
-                }}
+                style={{ color: safeColors.text }}
               >
                 Şifre
               </label>
@@ -281,19 +188,18 @@ export default function Login() {
                 type="password"
                 autoComplete="current-password"
                 required
-                className="w-full px-4 py-3 rounded-2xl border-3 focus:outline-none focus:ring-2 transition-all"
+                className="w-full px-4 py-3 rounded-lg border transition-all focus:outline-none focus:ring-2"
                 style={{
-                  backgroundColor: colors.background,
-                  borderColor: colors.border,
-                  color: colors.text,
-                  fontFamily: "'Inter', sans-serif"
+                  backgroundColor: safeColors.background,
+                  borderColor: safeColors.border,
+                  color: safeColors.text,
                 }}
                 onFocus={(e) => {
-                  e.target.style.borderColor = colors.primary;
-                  e.target.style.boxShadow = `0 0 0 3px ${colors.primary}30`;
+                  e.target.style.borderColor = safeColors.primary;
+                  e.target.style.boxShadow = `0 0 0 3px ${safeColors.primary}15`;
                 }}
                 onBlur={(e) => {
-                  e.target.style.borderColor = colors.border;
+                  e.target.style.borderColor = safeColors.border;
                   e.target.style.boxShadow = 'none';
                 }}
                 placeholder="••••••••"
@@ -301,47 +207,36 @@ export default function Login() {
                 onChange={(e) => setPassword(e.target.value)}
               />
             </div>
-          </div>
 
-          <div>
             <button
               type="submit"
               disabled={loading}
-              className="w-full py-3 px-4 rounded-2xl font-bold text-lg transition-all transform hover:scale-105 active:scale-95 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg relative overflow-hidden"
+              className="w-full py-3 px-4 rounded-lg font-medium text-white transition-all hover:opacity-90 disabled:opacity-50 disabled:cursor-not-allowed shadow-sm"
               style={{
-                backgroundColor: colors.primary,
-                color: 'white',
-                fontFamily: "'Poppins', sans-serif"
+                backgroundColor: safeColors.primary,
               }}
             >
-              {loading ? (
-                <span className="flex items-center justify-center">
-                  <span className="animate-pixel-bounce mr-2">⚡</span>
-                  Giriş yapılıyor...
-                </span>
-              ) : (
-                <span className="flex items-center justify-center">
-                  <span className="mr-2">🎮</span>
-                  Giriş yap
-                </span>
-              )}
+              {loading ? 'Giriş yapılıyor...' : 'Giriş Yap'}
             </button>
-          </div>
+          </form>
 
-          <div className="text-center">
+          <div className="mt-6 text-center">
             <Link
               to="/register"
-              className="text-sm font-medium transition-all hover:underline inline-flex items-center"
-              style={{ 
-                color: colors.primary,
-                fontFamily: "'Inter', sans-serif"
-              }}
+              className="text-sm font-medium transition-colors hover:underline"
+              style={{ color: safeColors.primary }}
             >
-              <span className="mr-1">💫</span>
               Hesabınız yok mu? Kayıt olun
             </Link>
           </div>
-        </form>
+        </div>
+
+        {/* Subtle lofi element - çok minimal */}
+        <div className="mt-8 text-center">
+          <p className="text-xs" style={{ color: safeColors.text, opacity: 0.4 }}>
+            ✨ Minimal & Productive
+          </p>
+        </div>
       </div>
     </div>
   );
