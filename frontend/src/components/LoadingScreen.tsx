@@ -18,8 +18,7 @@ export default function LoadingScreen() {
     <div 
       className="fixed inset-0 z-50 flex items-center justify-center"
       style={{ 
-        backgroundColor: safeColors.background,
-        background: `linear-gradient(135deg, ${safeColors.background} 0%, ${safeColors.card} 100%)`
+        backgroundColor: safeColors.background
       }}
     >
       <div className="text-center">
