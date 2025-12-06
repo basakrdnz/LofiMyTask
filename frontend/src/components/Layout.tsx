@@ -66,40 +66,28 @@ export default function Layout({ children }: LayoutProps) {
               </div>
               <nav className="flex space-x-2">
                 <Link
-                  to="/"
-                  className={`px-3 py-1.5 rounded-2xl text-sm font-medium transition-all transform hover:scale-105 ${
-                    location.pathname === '/' ? 'shadow-md' : ''
-                  }`}
-                  style={{
-                    backgroundColor: location.pathname === '/' ? colors.primary : 'transparent',
-                    color: location.pathname === '/' ? 'white' : colors.text
-                  }}
-                >
-                  🏠 Ana Sayfa
-                </Link>
-                <Link
                   to="/dashboard"
-                  className={`px-3 py-1.5 rounded-2xl text-sm font-medium transition-all transform hover:scale-105 ${
-                    location.pathname === '/dashboard' ? 'shadow-md' : ''
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all hover:opacity-90 ${
+                    location.pathname === '/dashboard' ? 'shadow-sm' : ''
                   }`}
                   style={{
                     backgroundColor: location.pathname === '/dashboard' ? colors.primary : 'transparent',
                     color: location.pathname === '/dashboard' ? 'white' : colors.text
                   }}
                 >
-                  📝 Notlar
+                  Notlar
                 </Link>
                 <Link
                   to="/calendar"
-                  className={`px-3 py-1.5 rounded-2xl text-sm font-medium transition-all transform hover:scale-105 ${
-                    location.pathname === '/calendar' ? 'shadow-md' : ''
+                  className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-all hover:opacity-90 ${
+                    location.pathname === '/calendar' ? 'shadow-sm' : ''
                   }`}
                   style={{
                     backgroundColor: location.pathname === '/calendar' ? colors.primary : 'transparent',
                     color: location.pathname === '/calendar' ? 'white' : colors.text
                   }}
                 >
-                  📅 Takvim
+                  Takvim
                 </Link>
               </nav>
             </div>
