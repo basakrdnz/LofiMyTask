@@ -40,16 +40,16 @@ export default function TaskCard({ task, onToggle, onEdit, onDelete }: TaskCardP
           {task.completed && <span className="text-white text-xs">✓</span>}
         </button>
         <div className="flex-1">
-          <h3 
+            <h3 
             className={`text-base font-semibold mb-2 ${
-              task.completed ? 'line-through' : ''
-            }`}
-            style={{ 
-              color: task.completed ? colors.text + '80' : colors.text 
-            }}
-          >
-            {task.title}
-          </h3>
+                task.completed ? 'line-through' : ''
+              }`}
+              style={{ 
+                color: task.completed ? colors.text + '80' : colors.text 
+              }}
+            >
+              {task.title}
+            </h3>
           <p 
             className={`text-sm mb-3 ${
               task.completed ? 'line-through' : ''

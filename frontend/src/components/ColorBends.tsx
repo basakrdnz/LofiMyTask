@@ -95,6 +95,22 @@ void main() {
 }
 `;
 
+interface ColorBendsProps {
+  className?: string;
+  style?: React.CSSProperties;
+  rotation?: number;
+  speed?: number;
+  colors?: string[];
+  transparent?: boolean;
+  autoRotate?: number;
+  scale?: number;
+  frequency?: number;
+  warpStrength?: number;
+  mouseInfluence?: number;
+  parallax?: number;
+  noise?: number;
+}
+
 export default function ColorBends({
   className,
   style,
@@ -109,12 +125,12 @@ export default function ColorBends({
   mouseInfluence = 1,
   parallax = 0.5,
   noise = 0.1
-}) {
-  const containerRef = useRef(null);
-  const rendererRef = useRef(null);
-  const rafRef = useRef(null);
-  const materialRef = useRef(null);
-  const resizeObserverRef = useRef(null);
+}: ColorBendsProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+  const rendererRef = useRef<THREE.WebGLRenderer | null>(null);
+  const rafRef = useRef<number | null>(null);
+  const materialRef = useRef<THREE.ShaderMaterial | null>(null);
+  const resizeObserverRef = useRef<ResizeObserver | null>(null);
   const rotationRef = useRef(rotation);
   const autoRotateRef = useRef(autoRotate);
   const pointerTargetRef = useRef(new THREE.Vector2(0, 0));
@@ -123,6 +139,8 @@ export default function ColorBends({
 
   useEffect(() => {
     const container = containerRef.current;
+    if (!container) return;
+
     const scene = new THREE.Scene();
     const camera = new THREE.OrthographicCamera(-1, 1, 1, -1, 0, 1);
 
@@ -238,7 +256,7 @@ export default function ColorBends({
     material.uniforms.uParallax.value = parallax;
     material.uniforms.uNoise.value = noise;
 
-    const toVec3 = hex => {
+    const toVec3 = (hex: string) => {
       const h = hex.replace('#', '').trim();
       const v =
         h.length === 3
@@ -276,7 +294,7 @@ export default function ColorBends({
     const container = containerRef.current;
     if (!material || !container) return;
 
-    const handlePointerMove = e => {
+    const handlePointerMove = (e: PointerEvent) => {
       const rect = container.getBoundingClientRect();
       const x = ((e.clientX - rect.left) / (rect.width || 1)) * 2 - 1;
       const y = -(((e.clientY - rect.top) / (rect.height || 1)) * 2 - 1);
@@ -289,5 +307,6 @@ export default function ColorBends({
     };
   }, []);
 
-  return <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className}`} style={style} />;
+  return <div ref={containerRef} className={`w-full h-full relative overflow-hidden ${className || ''}`} style={style} />;
 }
+
