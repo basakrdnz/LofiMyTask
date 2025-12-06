@@ -124,3 +124,33 @@ export const login = async (req: Request, res: Response, next: NextFunction) => 
   }
 };
 
+export const getMe = async (req: Request, res: Response, next: NextFunction) => {
+  try {
+    // req.userId authenticate middleware'den geliyor
+    const userId = (req as any).userId;
+
+    if (!userId) {
+      return res.status(401).json({ error: 'Authentication required' });
+    }
+
+    const user = await prisma.user.findUnique({
+      where: { id: userId },
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        createdAt: true
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    res.json({ user });
+  } catch (error: any) {
+    console.error('Get me error:', error);
+    next(error);
+  }
+};
+

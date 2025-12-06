@@ -21,6 +21,13 @@ export interface AuthResponse {
   token: string;
 }
 
+export interface User {
+  id: string;
+  email: string;
+  name?: string;
+  createdAt: string;
+}
+
 export const authApi = {
   register: async (data: RegisterData): Promise<AuthResponse> => {
     const response = await apiClient.post<AuthResponse>('/auth/register', data);
@@ -30,5 +37,9 @@ export const authApi = {
     const response = await apiClient.post<AuthResponse>('/auth/login', data);
     return response.data;
   },
+  getMe: async (): Promise<{ user: User }> => {
+    const response = await apiClient.get<{ user: User }>('/auth/me');
+    return response.data;
+  }
 };
 

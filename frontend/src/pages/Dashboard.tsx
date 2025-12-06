@@ -5,6 +5,7 @@ import NoteForm from '../components/NoteForm';
 import NoteCard from '../components/NoteCard';
 import TaskCard from '../components/TaskCard';
 import TaskForm from '../components/TaskForm';
+import LoadingScreen from '../components/LoadingScreen';
 
 export default function Dashboard() {
   const [notes, setNotes] = useState<Note[]>([]);
@@ -80,12 +81,7 @@ export default function Dashboard() {
   };
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-2xl">📚</div>
-        <div className="ml-4 text-gray-500">Yükleniyor...</div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (

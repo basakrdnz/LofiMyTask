@@ -2,12 +2,22 @@ import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuthStore } from '../store/authStore';
 import { useThemeStore } from '../store/themeStore';
+import LoadingScreen from '../components/LoadingScreen';
 
 export default function Welcome() {
   const navigate = useNavigate();
   const { user } = useAuthStore();
   const { colors } = useThemeStore();
   const [currentFeature, setCurrentFeature] = useState(0);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    // Kısa bir delay ile loading göster (smooth transition için)
+    const timer = setTimeout(() => {
+      setIsLoading(false);
+    }, 500);
+    return () => clearTimeout(timer);
+  }, []);
 
   const features = [
     {
@@ -39,6 +49,10 @@ export default function Welcome() {
     }, 3000);
     return () => clearInterval(interval);
   }, []);
+
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
 
   return (
     <div 

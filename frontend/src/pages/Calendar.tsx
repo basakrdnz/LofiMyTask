@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { notesApi, Note } from '../api/notes';
 import { useThemeStore } from '../store/themeStore';
+import LoadingScreen from '../components/LoadingScreen';
 
 export default function Calendar() {
   const [tasks, setTasks] = useState<Note[]>([]);
@@ -102,12 +103,7 @@ export default function Calendar() {
   today.setHours(0, 0, 0, 0);
 
   if (loading) {
-    return (
-      <div className="flex justify-center items-center h-64">
-        <div className="text-2xl">📅</div>
-        <div className="ml-4" style={{ color: colors.text }}>Yükleniyor...</div>
-      </div>
-    );
+    return <LoadingScreen />;
   }
 
   return (

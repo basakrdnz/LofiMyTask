@@ -79,9 +79,37 @@ process.on('SIGTERM', async () => {
   process.exit(0);
 });
 
-app.listen(PORT, () => {
+// Test database connection on startup
+const testDatabaseConnection = async () => {
+  try {
+    await prisma.$queryRaw`SELECT 1`;
+    console.log('✅ Database connection successful');
+  } catch (error: any) {
+    console.error('❌ Database connection failed:', error.message);
+    const hasDatabaseUrl = !!process.env.DATABASE_URL;
+    console.error('DATABASE_URL exists:', hasDatabaseUrl);
+    if (hasDatabaseUrl) {
+      const dbUrl = process.env.DATABASE_URL || '';
+      const maskedUrl = dbUrl.replace(/:[^:@]+@/, ':****@');
+      console.error('DATABASE_URL:', maskedUrl);
+      
+      // Check if it's a Render.com database
+      if (dbUrl.includes('render.com') || dbUrl.includes('onrender.com')) {
+        console.error('⚠️  Render.com database detected. Make sure:');
+        console.error('   1. Database is active in Render.com dashboard');
+        console.error('   2. Using External Connection String (not Internal)');
+        console.error('   3. Database is not paused (free tier databases pause after inactivity)');
+      }
+    }
+  }
+};
+
+app.listen(PORT, async () => {
   console.log(`Server is running on port ${PORT}`);
   console.log(`Environment: ${process.env.NODE_ENV || 'development'}`);
   console.log(`CORS Origin: ${process.env.CORS_ORIGIN || 'http://localhost:5173'}`);
+  
+  // Test database connection
+  await testDatabaseConnection();
 });
 

@@ -99,6 +99,34 @@ git add . && git commit -m "commit mesajı" && git push
 
 Render.com üzerinde deploy edilmiştir.
 
+## 🔄 Environment Variables
+
+Production ve Development arasında geçiş yaparken environment variables'ları kontrol edin:
+
+```bash
+# Environment variables kontrolü
+npm run env:check
+```
+
+Detaylı bilgi için: [ENV_CHECKLIST.md](./ENV_CHECKLIST.md)
+
+## 🔀 Git Workflow
+
+Proje için Git workflow ve branch stratejisi: [GIT_WORKFLOW.md](./GIT_WORKFLOW.md)
+
+### Hızlı Komutlar:
+```bash
+# Yeni özellik için branch oluştur
+git checkout develop
+git pull
+git checkout -b feature/feature-name
+
+# Production'a deploy
+git checkout main
+git merge develop
+git push origin main
+```
+
 ## 📄 Lisans
 
 MIT
